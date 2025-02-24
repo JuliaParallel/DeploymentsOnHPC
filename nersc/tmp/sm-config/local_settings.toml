@@ -1,0 +1,5 @@
+name = "julia"
+
+relocate = true
+destination = "/global/common/software/nersc/n9/julia"
+modules = "/global/common/software/nersc/n9/julia/modules"

@@ -1,0 +1,16 @@
+[MPIPreferences]
+_format = "1.1"
+abi = "MPICH"
+binary = "system"
+cclibs = ["cupti", "cudart", "cuda", "sci_nvidia_mpi", "sci_nvidia", "dl", "dsmml", "xpmem"]
+libmpi = "libmpi_nvidia.so"
+mpiexec = "srun"
+preloads = ["libmpi_gtl_cuda.so"]
+preloads_env_switch = "MPICH_GPU_SUPPORT_ENABLED"
+
+[MPICH_jll]
+libmpi_path = "/opt/cray/pe/lib64/libmpi_nvidia.so"
+
+[CUDA_Runtime_jll]
+local = "true"
+version = "11.7"

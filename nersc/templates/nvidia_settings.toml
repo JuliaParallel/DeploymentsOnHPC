@@ -1,0 +1,15 @@
+[constant]
+template_version = 1
+cray = true
+
+prg_env = "nvidia"
+mpi_mod = "cray-mpich"
+
+mpi_abi = "MPICH"
+mpi_lib = "libmpi_nvidia.so"
+srun_cmd = "srun"
+
+cclibs = '"cupti", "cudart", "cuda", "sci_nvidia_mpi", "sci_nvidia", "dl", "dsmml", "xpmem"'
+
+[product]
+cuda_version = ["11.7", "12.0", "12.2", "12.4"]

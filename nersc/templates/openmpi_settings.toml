@@ -1,0 +1,15 @@
+[constant]
+template_version = 1
+cray = false
+
+prg_env = "gnu"
+mpi_mod = "openmpi"
+
+mpi_abi = "OpenMPI"
+mpi_lib = "libmpi"
+srun_cmd = "srun --mpi=pmix"
+
+cclibs = ''
+
+[product]
+cuda_version = ["11.7", "12.0", "12.2", "12.4"]

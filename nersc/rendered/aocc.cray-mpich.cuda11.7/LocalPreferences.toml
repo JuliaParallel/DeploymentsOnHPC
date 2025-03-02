@@ -1,0 +1,13 @@
+[MPIPreferences]
+_format = "1.1"
+abi = "MPICH"
+binary = "system"
+cclibs = ["cupti", "cudart", "cuda", "sci_aocc_mpi", "sci_aocc", "dl", "dsmml", "xpmem"]
+libmpi = "libmpi_aocc.so"
+mpiexec = "srun"
+preloads = ["libmpi_gtl_cuda.so"]
+preloads_env_switch = "MPICH_GPU_SUPPORT_ENABLED"
+
+[CUDA_Runtime_jll]
+local = "true"
+version = "11.7"

@@ -1,0 +1,27 @@
+[env]
+JULIA_DEPOT_PATH = "{SITE_DESTINATION}/depot"
+JULIAUP_DEPOT_PATH = "{SITE_DESTINATION}/depot"
+INSTALL_DIR = "{SITE_DESTINATION}/juliaup"
+SITE_CONFIG_DIR = "{SITE_CONFIG_DIR}"
+INSTALL_VERSION = "{INSTALL_VERSION}"
+
+[install]
+versions = ["stable"]
+prefix = "{SITE_DESTINATION}"
+# note: this is Lua regex: you will need to escape - and + (using %)
+format = "^juliaup$"
+# (optional) relocate after install
+destination = "{SITE_DESTINATION}/{INSTALL_VERSION}"
+stage = false
+
+[module]
+INSTALL_VERSION = "{INSTALL_VERSION}"
+JULIA_LOAD_PATH_PREFIX = "{SITE_DESTINATION}/environments"
+BIN_PATH = "{INSTALL_DIR}/bin"
+
+[post]
+# toggles mandatory relocate if `stage` and `clean` are true. If the install
+# script already relocates the package, then we can set `safe = false`
+safe = true
+# delete staging aread after successful install
+clean = true

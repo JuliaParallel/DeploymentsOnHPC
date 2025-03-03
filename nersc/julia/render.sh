@@ -65,9 +65,6 @@ __PREFIX+=($(                                  \
 
 pushd ${__PREFIX[-1]}
     mkdir -p $(pwd)/../../tmp
-
-    module load juliaup
-
     ../../opt/bin/simple-modules.ex        \
         sm-config/                         \
         --destination=$(pwd)/../../tmp     \

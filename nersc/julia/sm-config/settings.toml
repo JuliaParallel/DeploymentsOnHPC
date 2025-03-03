@@ -6,7 +6,7 @@ SITE_CONFIG_DIR = "{SITE_CONFIG_DIR}"
 INSTALL_VERSION = "{INSTALL_VERSION}"
 
 [install]
-versions = ["1.10.4", "1.10.3", "1.10.2", "1.10.1", "1.10.0", "1.9.4", "1.8.5"]
+versions = ["1.11.3", "1.10.8", "1.9.4", "1.8.5"]
 prefix = "{SITE_DESTINATION}/depot/juliaup/"
 # note: this is Lua regex: you will need to escape - and + (using %)
 format = "^julia%-{INSTALL_VERSION}%+.*$"
@@ -15,9 +15,8 @@ destination = "{SITE_DESTINATION}/{INSTALL_VERSION}"
 stage = false
 
 [module]
-JULIA_LOAD_PATH_PREFIX = "{SITE_DESTINATION}/environments/{INSTALL_VERSION}"
-JULIA_PATH_1 = "{INSTALL_DIR}/bin"
-JULIA_PATH_2 = "{SITE_DESTINATION}/bin"
+INSTALL_VERSION = "{INSTALL_VERSION}"
+JULIA_PATH = "{INSTALL_DIR}/bin"
 
 [post]
 # toggles mandatory relocate if `stage` and `clean` are true. If the install

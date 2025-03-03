@@ -64,7 +64,6 @@ __PREFIX+=($(                                  \
 
 
 pushd ${__PREFIX[-1]}
-    rm -rf $(pwd)/../../tmp
     mkdir -p $(pwd)/../../tmp
     ../../opt/bin/simple-modules.ex sm-config/
 popd

@@ -11,7 +11,7 @@ then
 fi
 
 # Installs Juliaup to $INSTALL_DIR/bin
-curl -fsSL https://install.julialang.org | sh -s -- --add-to-path=0 --yes --path ${INSTALL_DIR}
+curl -fsSL https://install.julialang.org | sh -s -- --add-to-path=0 --background-selfupdate=0 --startup-selfupdate=0 --yes --path ${INSTALL_DIR}
 
 # creates an environment for each install
 mkdir -p ${INSTALL_DIR}/../environments

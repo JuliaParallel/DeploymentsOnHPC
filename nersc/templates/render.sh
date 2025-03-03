@@ -85,6 +85,7 @@ pushd ${__DIR__}
         "../kernels/rendered/nersc-julia-{{julia_thread_ct}}-{{julia_version}}{{#use_cudnn}}-cudnn{{/use_cudnn}}{{#use_latest}}-beta{{/use_latest}}/kernel-helper.sh"
     for target in $(/bin/ls ../kernels/rendered/)
     do 
+        chmod u+x ../kernels/rendered/$target/kernel-helper.sh
         cp jupyter/logo-32x32.png ../kernels/rendered/$target/
         cp jupyter/logo-64x64.png ../kernels/rendered/$target/
     done

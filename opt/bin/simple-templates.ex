@@ -4205,6 +4205,13 @@ for k, v in pairs(settings.zip) do
     end
 end
 
+if (nil ~= settings.zip) and (0 == n_elt) then
+    log.warn(
+        "No vectors found in zip iterator => assuming single-element vectors only"
+    )
+    n_elt = 1
+end
+
 ---@diagnostic disable-next-line: unused-local
 for k, v in pairs(settings.zip) do
     if "table" ~= type(v) then

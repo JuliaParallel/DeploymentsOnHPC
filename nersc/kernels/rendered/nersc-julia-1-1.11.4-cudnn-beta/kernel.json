@@ -1,5 +1,5 @@
 {
-  "display_name": "NERSC Julia 1.11.3 16 Thread(s) with CUDNN",
+  "display_name": "NERSC Julia 1.11.4 1 Thread(s) with CUDNN Beta",
   "argv": [
     "{resource_dir}/kernel-helper.sh",
     "{connection_file}"

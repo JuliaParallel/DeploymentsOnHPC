@@ -1,9 +1,10 @@
 #!/bin/bash
+module use /global/common/software/nersc9/julia/modules
 module load PrgEnv-gnu
 module load python
-module load julia/1.11.3
+module load julia/1.11.4
 
-export JULIA_NUM_THREADS=1
+export JULIA_NUM_THREADS=16
 
 readarray -t ijulia_boostrap < <(julia /global/common/software/nersc9/julia/kernels/bootstrap.jl)
 

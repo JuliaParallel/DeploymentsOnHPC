@@ -5,7 +5,7 @@ set -eu
 if [[ $# -lt 1 ]];
 then
     echo "Usage: $0 <script> [args...]"
-    echo "Sets the __PREFIX__ variable to the parent directory of $0 and __DIR__ to the directory of <script?"
+    echo "Sets the __PREFIX__ variable to the parent directory of $0 and __DIR__ to the directory of <script>"
     exit 1
 fi
 

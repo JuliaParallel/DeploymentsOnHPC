@@ -18,6 +18,7 @@ stage = false
 INSTALL_VERSION = "{INSTALL_VERSION}"
 JULIA_LOAD_PATH_PREFIX = "{SITE_DESTINATION}/environments"
 BIN_PATH = "{INSTALL_DIR}/bin"
+SCRIPT_PATH = "{SITE_DESTINATION}/scripts"
 
 [post]
 # toggles mandatory relocate if `stage` and `clean` are true. If the install

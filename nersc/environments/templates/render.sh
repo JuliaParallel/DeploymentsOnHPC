@@ -2,7 +2,7 @@
 set -eu
 pushd ${__DIR__}
 
-prg_envs=("aocc" "cray" "gnu" "nvidia" "llvm" "openmpi")
+prg_envs=("aocc" "cray" "gnu" "intel" "nvidia" "llvm" "openmpi")
 
 #-------------------------------------------------------------------------------
 # Julia Environments

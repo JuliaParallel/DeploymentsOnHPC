@@ -28,8 +28,8 @@ where to find `libmpi.so`) can be combined with a users own Julia deployment.
 Installing Julia therefore has the following phases:
 1. Render the templated global preferences. This is only necessary if a system
    maintenance has changed the names, or versions of the MPI and CUDA system
-   libraries. See the sections on [Juliaup](#Juliaup) and [Helper
-   Scripts](#Helper%20Scripts) for more details.
+   libraries. See the sections on [Juliaup](#juliaup) and [Helper
+   Scripts](#helper-scripts) for more details.
 2. Install Juliaup
 3. Install the preferred Julia Binaries
 4. Install the default Jupyter "NERSC-Julia" kernels and helper scripts

@@ -4099,6 +4099,7 @@ Path of output file. This can contain mustache placeholders. For example if give
 output path `out_{{x}}/put_{{y}}.txt`, where `x=1` and `y=2` are parameters in the
 settings, then the output will be written to: `out_1/put_2.txt`.
 ]])
+parser:option("--overwrite", "JSON-formatted overwrite table, eg: '{\"key\": \"new value\"}'")
 
 parser:help_vertical_space(2)
 
@@ -4111,11 +4112,21 @@ local settings_file = table.concat(gears.read_lines(args.settings), "\n")
 -- print the settings file (for debug purposes)
 log.info("Template:\n" .. template_file)
 log.info("Settings:\n" .. settings_file)
+if nil ~= args.overwrite then
+    log.info(f"Overwrite:\n".. args.overwrite)
+end
 
+-- load settings from file
 local settings  = toml.parse(settings_file)
+-- ensure that the resulting settings table contains all sections
 ensure_table(settings, "constant")
 ensure_table(settings, "product")
 ensure_table(settings, "zip")
+ensure_table(settings, "overwrite")
+-- decode overwrite table (if given), these will be applied to constaints later
+if nil ~= args.overwrite then
+    settings.overwrite = json.decode(args.overwrite)
+end
 
 -- populate dictionaries of key/vals and (if in debug mode) print how the inputs
 -- are interpreted
@@ -4130,6 +4141,12 @@ local const_vals = {}
 
 ---@diagnostic disable-next-line: unused-local
 for k, v in pairs(settings.constant) do
+    -- check if should overwrite
+    if nil ~= settings.overwrite[k] then
+        log.warn(f"Overwriting constant: {k}")
+        v = settings.overwrite[k]
+    end
+
     ---@diagnostic disable-next-line: unused-local
     local tbl_st = json.encode(v)
     log.debug(f" {ct}. {k} = {tbl_st}")

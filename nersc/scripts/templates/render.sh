@@ -24,11 +24,11 @@ ${__PREFIX__}/opt/bin/simple-templates.ex                                  \
 ${__PREFIX__}/opt/bin/simple-templates.ex                                  \
     bin/install_beta.sh                                                    \
     settings.toml                                                          \
-    "${SCRIPT_DIR}/install_beta.sh"
+    "${SCRIPT_DIR}/install_jupyter_beta_{{{julia_version}}}.sh"
 
-chmod u+x ${SCRIPT_DIR}/install_beta.sh
-chmod g+x ${SCRIPT_DIR}/install_beta.sh
-chmod o+x ${SCRIPT_DIR}/install_beta.sh
+chmod u+x ${SCRIPT_DIR}/install_jupyter_beta_*.sh
+chmod g+x ${SCRIPT_DIR}/install_jupyter_beta_*.sh
+chmod o+x ${SCRIPT_DIR}/install_jupyter_beta_*.sh
 
 chmod o+rX -R ${SCRIPT_DIR}
 

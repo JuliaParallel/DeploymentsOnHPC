@@ -29,4 +29,6 @@ cp    ${__DIR__}/../bootstrap.jl ${KERNEL_DIR}/
 cp -r ${__DIR__}/../user         ${KERNEL_DIR}/
 cp -r ${__DIR__}/../julia-user   ${KERNEL_DIR}/
 
+chmod o+rX -R ${KERNEL_DIR}
+
 popd

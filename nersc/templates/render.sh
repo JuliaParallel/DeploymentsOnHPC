@@ -10,7 +10,6 @@ prg_envs=("aocc" "cray" "gnu" "nvidia" "llvm" "openmpi")
 
 for prg_env in ${prg_envs[@]}
 do
-
     ${__PREFIX__}/opt/bin/simple-templates.ex                                  \
         environment/LocalPreferences.toml                                      \
         "${prg_env}_settings.toml"                                             \

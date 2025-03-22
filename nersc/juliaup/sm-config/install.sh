@@ -16,5 +16,5 @@ curl -fsSL https://install.julialang.org | sh -s -- --add-to-path=0 --background
 # creates an environment for each install
 mkdir -p ${INSTALL_DIR}/../environments
 cp -r \
-    ${SITE_CONFIG_DIR}/../../rendered/* \
+    ${SITE_CONFIG_DIR}/../../environments/rendered/* \
     ${INSTALL_DIR}/../environments/

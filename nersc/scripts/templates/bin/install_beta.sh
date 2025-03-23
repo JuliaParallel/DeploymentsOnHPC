@@ -7,7 +7,7 @@ source {{{nersc_resource_dir}}}/scripts/activate_beta.sh
 
 mkdir -p ~/.local/share/jupyter/kernels
 pushd ~/.local/share/jupyter/kernels
-    cp -r {{{nersc_resource_dir}}}/kernels/rendered/nersc-julia-*-{{{julia_version}}}-*-beta .
+    cp -r {{{nersc_resource_dir}}}/kernels/rendered/nersc-julia-*-{{{julia_version}}}*-beta .
 popd
 
 ml load julia/{{{julia_version}}}

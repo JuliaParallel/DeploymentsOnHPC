@@ -1,5 +1,7 @@
 # A Collection of Julia Deployments on HPC Systems
 
+A collection of module-centric Julia deployments on HPC systems.
+
 ## How to use this Repository
 
 ### Use the Entrypoint

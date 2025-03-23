@@ -30,9 +30,12 @@ Installing Julia therefore has the following phases:
    maintenance has changed the names, or versions of the MPI and CUDA system
    libraries. See the sections on [Juliaup](#juliaup) and [Helper
    Scripts](#helper-scripts) for more details.
-2. Install Juliaup
-3. Install the preferred Julia Binaries
-4. Install the default Jupyter "NERSC-Julia" kernels and helper scripts
+2. [Install Juliaup](#juliaup). This will also copy the preferences to a global
+   location.
+3. [Install the preferred Julia Binaries](#preferred-julia-binaries). Note that
+   these depend on the `juliaup` module being in the `MODULEPATH`
+4. Install the default [Jupyter "NERSC-Julia"](#jupyter-kernels) kernels and
+   helper scripts.
 
 ### Why even do things this way?
 

@@ -65,10 +65,23 @@ lmod-based module system.
 
 ## Juliaup
 
+Installing [Juliaup](https://github.com/JuliaLang/juliaup) is handled by Simple
+Modules, and is configured via the `sm-config` folder.
+
 ```
-├── juliaup
-│   └── sm-config
+nersc/juliaup/
+├── render.sh
+├── render_tmp.sh
+└── sm-config
+    ├── install.sh
+    ├── local_settings.toml
+    ├── module_template.lua
+    └── settings.toml
 ```
+
+To install, either run:
+* `./entrypoint.sh ./nersc/juliaup/render.sh` 
+* `./entrypoint.sh ./nersc/juliaup/render_tmp.sh` 
 
 
 ### Management of Global Preferences

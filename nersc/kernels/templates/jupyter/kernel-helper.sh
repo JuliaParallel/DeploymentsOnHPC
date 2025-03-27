@@ -5,9 +5,7 @@ module use /global/common/software/nersc9/julia/modules
 module load PrgEnv-gnu
 module load python
 module load julia/{{{julia_version}}}
-{{#use_cudnn}}
 module load cudnn
-{{/use_cudnn}}
 
 export JULIA_NUM_THREADS={{julia_thread_ct}}
 

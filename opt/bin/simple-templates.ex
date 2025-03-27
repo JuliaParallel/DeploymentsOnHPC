@@ -4182,12 +4182,19 @@ local prod_vals = {}
 
 ---@diagnostic disable-next-line: unused-local
 for k, v in pairs(settings.product) do
+    -- check if should overwrite
+    if nil ~= settings.overwrite[k] then
+        log.warn(f"Overwriting product: {k}")
+        v = settings.overwrite[k]
+    end
+
     if "table" ~= type(v) then
         log.warn(
             f"Constant input detected for {k} = {v}, promoting to table"
         )
         v = {v}
     end
+
     ---@diagnostic disable-next-line: unused-local
     local tbl_st = json.encode(v)
     log.debug(f" {ct}. {k} = {tbl_st}")
@@ -4231,6 +4238,12 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 for k, v in pairs(settings.zip) do
+    -- check if should overwrite
+    if nil ~= settings.overwrite[k] then
+        log.warn(f"Overwriting zip: {k}")
+        v = settings.overwrite[k]
+    end
+
     if "table" ~= type(v) then
         log.warn(
             f"Constant input detected for {k} = {v}, promoting to table"

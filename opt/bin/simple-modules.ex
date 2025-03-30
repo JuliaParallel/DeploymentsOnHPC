@@ -1692,7 +1692,7 @@ end
 
 
 function M.ensure_dir(name)
-    sh.mkdir("-p", name)
+    sh.mkdir("-p", name) -- ensure order => don't use table
 end
 
 
@@ -1755,6 +1755,38 @@ function M.log_sh(self, name, cmd)
         file_stderr:write(sh.stderr(cmd))
         file_stderr:close()
     end
+end
+
+-- 
+-- Extract parent directiory, file name, and extension (order of returns) from a
+-- path. Example usage:
+--
+-- > require("gears").basename([[/mnt/tmp/myfile.txt]])
+-- "/mnt/tmp/" "myfile.txt"    "txt"
+--
+function M.basename(path)
+    -- ChatGPT Explanation of the regex (seems legit...)
+    --
+    -- ### 1\. **`(.-)`**
+    --  * `.` matches any character except a newline.
+    --  * `-` makes it _lazy_ (matches the shortest possible sequence).
+    --  * This part captures everything up to the last part of the path (i.e.,
+    --    the directory portion).
+    --
+    -- ### 2\. **`([^\\/]-%.?([^%.\\/]*))`**
+    -- * `[^\\/]` matches any character except `\` or `/` (to avoid matching
+    --   directory separators).
+    -- * `-` makes it _lazy_ again. * `%` is used to escape `.` because `.`
+    --   normally matches any character.
+    -- * `.?` means that the `.` (dot) is optional (i.e., to account for
+    --   filenames that might not have an extension).
+    -- * `([^%.\\/]*)` captures the file extension (anything after the last `.`
+    --   in the filename).
+    --
+    -- ### 3\. **`$`**
+    --  * Ensures the regex matches only at the end of the string.
+    --
+    return string.match(path, "(.-)([^\\/]-%.?([^%.\\/]*))$")
 end
 
 return M
@@ -4482,14 +4514,14 @@ end
 
 -- ensure that the destination exists, and switch to that directory: this will
 -- be the working directory for any extract/build/install
-sh.mkdir({p=true, settings.site.destination})
+sh.mkdir("-p", settings.site.destination) -- ensure order => don't use table
 sh.cd(settings.site.destination)
 
 local function ensure_stage_dir(name, variant, version)
     local dn = stage_dir_name(name, variant, version)
 
     log.info(f"Using staging dir: {dn} exists")
-    sh.mkdir({p=true, dn})
+    sh.mkdir("-p", dn) -- ensure order => don't use table
 
     -- stage dir must be empty
     for file in string.gmatch(tostring(sh.ls(dn)), "[^\n]+") do
@@ -4635,7 +4667,7 @@ template_file:close()
 log.info("Generating modules ...")
 
 local module_dir = settings.site.modules .. "/" .. settings.site.name
-sh.mkdir({p=true, module_dir})
+sh.mkdir("-p", module_dir) -- ensure order => don't use table
 -- fill in module template for each version
 for version, _ in pairs(installed_versions) do
     log.info(f"Generating module for version {version}")

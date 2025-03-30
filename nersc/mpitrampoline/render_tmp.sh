@@ -6,6 +6,6 @@ pushd ${__DIR__}
     ${__PREFIX__}/opt/bin/simple-modules.ex           \
         sm-config/                                    \
         --destination=${__PREFIX__}/tmp/mpitrampoline \
-        --modules=${__PREFIX__}/tmp/mpitrampoline/modules
+        --modules=${__PREFIX__}/tmp/modules
 popd
 

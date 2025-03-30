@@ -5,7 +5,6 @@ tar -xf v${INSTALL_VERSION}.tar.gz
 
 cd MPItrampoline-${INSTALL_VERSION}
 cmake -S . -B build                           \
-    -DMPIEXEC_EXECUTABLE=mpiexec              \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo         \
     -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}/${INSTALL_VERSION_VARIANT}
 

@@ -22,13 +22,13 @@ whatis("Version: {{{INSTALL_VERSION}}}")
 whatis("URL: https://github.com/eschnett/MPItrampoline")
 
 local mpi_settings = {
-    aocc    = {pe="aocc",   dep={},          cc="cc",    mpirun="srun"},
+    aocc    = {pe="aocc",   dep={},          cc="clang", mpirun="srun"},
     cray    = {pe="cray",   dep={},          cc="cc",    mpirun="srun"},
-    gnu     = {pe="gnu",    dep={},          cc="cc",    mpirun="srun"},
-    intel   = {pe="intel",  dep={},          cc="cc",    mpirun="srun"},
-    nvidia  = {pe="nvidia", dep={},          cc="cc",    mpirun="srun"},
-    llvm    = {pe="llvm",   dep={"mpich"},   cc="mpicc", mpirun="srun"},
-    openmpi = {pe="gnu",    dep={"openmpi"}, cc="mpicc", mpirun="srun --mpi=pmix"}
+    gnu     = {pe="gnu",    dep={},          cc="gcc",   mpirun="srun"},
+    intel   = {pe="intel",  dep={},          cc="icx",   mpirun="srun"},
+    nvidia  = {pe="nvidia", dep={},          cc="nvc",   mpirun="srun"},
+    llvm    = {pe="llvm",   dep={"mpich"},   cc="clang", mpirun="srun"},
+    openmpi = {pe="gnu",    dep={"openmpi"}, cc="gcc",   mpirun="srun --mpi=pmix"}
 }
 
 local all_pes = {
@@ -58,7 +58,6 @@ depends_on(
 
 
 prepend_path("PATH", "{{{MPITRAMPOLINE_PATH}}}/bin")
-prepend_path("LD_LIBRARY_PATH", "{{{MPITRAMPOLINE_PATH}}}/lib")
 prepend_path("LD_LIBRARY_PATH", "{{{MPITRAMPOLINE_PATH}}}/lib64")
 setenv("MPITRAMPOLINE_CC", mpi_settings.{{{INSTALL_VARIANT}}}.cc)
 setenv("MPITRAMPOLINE_MPIEXEC", mpi_settings.{{{INSTALL_VARIANT}}}.mpirun)

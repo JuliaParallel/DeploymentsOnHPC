@@ -1,0 +1,5 @@
+name = "mpiwrapper"
+
+relocate = false
+destination = "/global/common/software/nersc9/mpiwrapper"
+modules = "/global/common/software/nersc9/mpiwrapper/modules"

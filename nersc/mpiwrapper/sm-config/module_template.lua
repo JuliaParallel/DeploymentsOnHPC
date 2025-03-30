@@ -51,4 +51,5 @@ depends_on("PrgEnv-" .. mpi_settings.{{{INSTALL_VARIANT}}}.pe)
 
 prepend_path("PATH", "{{{MPIWRAPPER_PATH}}}/bin")
 prepend_path("LD_LIBRARY_PATH", "{{{MPIWRAPPER_PATH}}}/lib")
+prepend_path("LD_LIBRARY_PATH", "{{{MPIWRAPPER_PATH}}}/lib64")
 setenv("MPITRAMPOLINE_LIB", "{{{MPIWRAPPER_PATH}}}/lib/libmpiwrapper.so")

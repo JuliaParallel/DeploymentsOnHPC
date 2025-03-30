@@ -59,5 +59,6 @@ depends_on(
 
 prepend_path("PATH", "{{{MPITRAMPOLINE_PATH}}}/bin")
 prepend_path("LD_LIBRARY_PATH", "{{{MPITRAMPOLINE_PATH}}}/lib")
+prepend_path("LD_LIBRARY_PATH", "{{{MPITRAMPOLINE_PATH}}}/lib64")
 setenv("MPITRAMPOLINE_CC", mpi_settings.{{{INSTALL_VARIANT}}}.cc)
 setenv("MPITRAMPOLINE_MPIEXEC", mpi_settings.{{{INSTALL_VARIANT}}}.mpirun)

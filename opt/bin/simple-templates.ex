@@ -1734,6 +1734,13 @@ function M.mkdir(path)
 end
 
 
+---@diagnostic disable-next-line: unused-local
+function M.cp(src, dest)
+    return io.popen(
+        F"cp -r '{src}' '{dest}' && echo true || echo false"
+    ):read("*a"):gsub("\n", "") == "true"
+end
+
 --------------------------------------------------------------------------------
 -- product and zip iterators
 --------------------------------------------------------------------------------
@@ -3979,6 +3986,36 @@ end
 -- handle template state data
 --------------------------------------------------------------------------------
 
+local function walk_path(pth, name)
+    local function incr_path(fname, root)
+        if nil == root then
+            return fname
+        end
+        return root .. "/" .. fname
+    end
+
+    local paths = {}
+    log.debug(f"Scanning: Path = {pth}, Module = {name}")
+    for _, d in pairs(gears.read_dir(pth)) do
+        log.debug(f"Found: {d.name}, id_dir={d.is_dir}")
+        if d.is_dir then
+            log.trace(f"Entering: {d.name}")
+            local s_libs = walk_path(
+                pth .. "/" .. d.name, incr_path(d.name, name)
+            )
+            for _, v in pairs(s_libs) do paths[#paths+1] = v end
+        else
+            paths[#paths+1] = {
+                src  = pth .. "/" .. d.name,
+                dest = incr_path(d.name, name)
+            }
+        end
+    end
+
+    return paths
+end
+
+
 local function list_to_dict(keys, vals)
     local len_keys = #keys
     local len_vals = #vals
@@ -4014,6 +4051,23 @@ local function save_template(dest_spec, data, tmpl_params)
 
     output_file:write(data)
     output_file:close()
+
+    return tmpl_dest
+end
+
+
+local function copy_resource(dest_spec, src, dst, tmpl_params)
+    log.debug(f"Copying resource using path spec: {dest_spec}")
+
+    local tmpl_dest = lustache:render(dest_spec, tmpl_params) .. "/" .. dst
+    local folder_dest, _, _ = gears.basename(tmpl_dest)
+    if not gears.dir_exists(folder_dest) then
+        log.info(f"Folder {folder_dest} does not exist, creating")
+        gears.mkdir(folder_dest)
+    end
+
+    log.debug(f"Copying {src} to {tmpl_dest}")
+    gears.cp(src, folder_dest)
 
     return tmpl_dest
 end
@@ -4099,18 +4153,42 @@ Path of output file. This can contain mustache placeholders. For example if give
 output path `out_{{x}}/put_{{y}}.txt`, where `x=1` and `y=2` are parameters in the
 settings, then the output will be written to: `out_1/put_2.txt`.
 ]])
-parser:option("--overwrite", "JSON-formatted overwrite table, eg: '{\"key\": \"new value\"}'")
+parser:option("--overwrite", "JSON-formatted overwrite table, eg: '{\"key\": \"new value\"}'"):args(1)
+parser:option("--dir", "Assume template and output paths are directories"):args(0):default(false)
+parser:option("--resource", "Regex used to check if path should not be rendered"):args(1):default("")
 
 parser:help_vertical_space(2)
 
 local args = parser:parse()
 
+print(args.dir)
+
+
 -- template and settings
-local template_file = table.concat(gears.read_lines(args.template), "\n")
+local template_files = {}
+local resource_files = {}
+if args.dir then
+    local files = walk_path(args.template)
+    ---@diagnostic disable-next-line: unused-local
+    local files_st = json.encode(files)
+    log.info(f"Running in DIR mode, on the following files: {files_st}")
+    for _, v in ipairs(files) do
+        if ("" ~= args.resource) and (string.match(v.src, args.resource)) then
+            log.debug(f"Skipping {v.src} => identified as a resource")
+            resource_files[v.dest] = v.src
+        else
+            template_files[v.dest] = table.concat(gears.read_lines(v.src), "\n")
+        end
+    end
+else
+    template_files["__main__"] = table.concat(
+        gears.read_lines(args.template), "\n"
+    )
+end
 local settings_file = table.concat(gears.read_lines(args.settings), "\n")
 
 -- print the settings file (for debug purposes)
-log.info("Template:\n" .. template_file)
+if not args.dir then log.info("Template:\n" .. template_files["__main__"]) end
 log.info("Settings:\n" .. settings_file)
 if nil ~= args.overwrite then
     log.info(f"Overwrite:\n".. args.overwrite)
@@ -4166,11 +4244,26 @@ if (nil == next(settings.product)) and (nil == next(settings.zip)) then
     local tmpl_st = json.encode(tmpl)
     log.debug(f"Begin generating: Template [ {tmpl_st} ]")
 
-    local tmpl_inst = lustache:render(template_file, tmpl)
     ---@diagnostic disable-next-line: unused-local
-    local tmpl_dest = save_template(args.output, tmpl_inst, tmpl)
+    for path, template_file in pairs(template_files) do
+        local tmpl_inst = lustache:render(template_file, tmpl)
+        local output = args.output
+        if args.dir then
+            ---@diagnostic disable-next-line: unused-local
+            output = f"{output}/{path}"
+            log.debug(f"DIR mode detected => appending {path}")
+        end
+        ---@diagnostic disable-next-line: unused-local
+        local tmpl_dest = save_template(output, tmpl_inst, tmpl)
+        log.info(f"Template generated at: {tmpl_dest}")
+    end
 
-    log.info(f"Template generated at: {tmpl_dest}")
+    for dst, src in pairs(resource_files) do
+        log.info(f"Copying resource file {src} => {dst}")
+        ---@diagnostic disable-next-line: unused-local
+        local resource_dst = copy_resource(args.output, src, dst, tmpl)
+        log.info(f"Copied resource to: {resource_dst}")
+    end
 end
 
 log.debug("Product Space:")
@@ -4276,11 +4369,26 @@ if nil ~= next(settings.product) then
         local tmpl_st = json.encode(tmpl)
         log.debug(f"Begin generating: Template [ {tmpl_st} ]")
 
-        local tmpl_inst = lustache:render(template_file, tmpl)
         ---@diagnostic disable-next-line: unused-local
-        local tmpl_dest = save_template(args.output, tmpl_inst, tmpl)
+        for path, template_file in pairs(template_files) do
+            local tmpl_inst = lustache:render(template_file, tmpl)
+            local output = args.output
+            if args.dir then
+                ---@diagnostic disable-next-line: unused-local
+                output = f"{output}/{path}"
+                log.debug(f"DIR mode detected => appending {path}")
+            end
+            ---@diagnostic disable-next-line: unused-local
+            local tmpl_dest = save_template(output, tmpl_inst, tmpl)
+            log.info(f"Template generated at: {tmpl_dest}")
+        end
 
-        log.info(f"Template generated at: {tmpl_dest}")
+        for dst, src in pairs(resource_files) do
+            log.info(f"Copying resource file {src} => {dst}")
+            ---@diagnostic disable-next-line: unused-local
+            local resource_dst = copy_resource(args.output, src, dst, tmpl)
+            log.info(f"Copied resource to: {resource_dst}")
+        end
     end
 end
 
@@ -4291,14 +4399,25 @@ if nil ~= next(settings.zip) then
         for k, v in pairs(list_to_dict(zip_vars, zip_inst)) do tmpl[k] = v end
 
         ---@diagnostic disable-next-line: unused-local
-        local tmpl_st = json.encode(tmpl)
-        log.debug(f"Begin generating: Template [ {tmpl_st} ]")
+        for path, template_file in pairs(template_files) do
+            local tmpl_inst = lustache:render(template_file, tmpl)
+            local output = args.output
+            if args.dir then
+                ---@diagnostic disable-next-line: unused-local
+                output = f"{output}/{path}"
+                log.debug(f"DIR mode detected => appending {path}")
+            end
+            ---@diagnostic disable-next-line: unused-local
+            local tmpl_dest = save_template(output, tmpl_inst, tmpl)
+            log.info(f"Template generated at: {tmpl_dest}")
+        end
 
-        local tmpl_inst = lustache:render(template_file, tmpl)
-        ---@diagnostic disable-next-line: unused-local
-        local tmpl_dest = save_template(args.output, tmpl_inst, tmpl)
-
-        log.info(f"Template generated at: {tmpl_dest}")
+        for dst, src in pairs(resource_files) do
+            log.info(f"Copying resource file {src} => {dst}")
+            ---@diagnostic disable-next-line: unused-local
+            local resource_dst = copy_resource(args.output, src, dst, tmpl)
+            log.info(f"Copied resource to: {resource_dst}")
+        end
     end
 end
 

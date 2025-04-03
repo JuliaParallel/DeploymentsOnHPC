@@ -1,0 +1,5 @@
+name = "mpitrampoline"
+
+relocate = false
+destination = "/global/common/software/nersc9/mpitrampoline"
+modules = "/global/common/software/nersc9/mpitrampoline/modules"

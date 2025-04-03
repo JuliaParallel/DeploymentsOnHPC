@@ -1,2 +1,4 @@
 nersc/util/mpi_proj/Manifest.toml
 nersc/util/mpi_proj/LocalPreferences.toml
+nersc/mpitrampoline/test/build/
+tmp/

@@ -32,6 +32,8 @@ catch e
     @info "Updating IJulia (and any of its dependencies)"
     Pkg.update("IJulia"; preserve=Pkg.PRESERVE_NONE)
     @info "Trying Pkg.build(\"IJulia\")"
+    # Prevent default kernel installation: https://julialang.github.io/IJulia.jl/stable/manual/installation/#Installing-additional-Julia-kernels
+    ENV["IJULIA_NODEFAULTKERNEL"] = 1
     Pkg.build("IJulia")
 finally
     import IJulia

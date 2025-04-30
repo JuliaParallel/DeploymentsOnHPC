@@ -4276,9 +4276,13 @@ local subsitutions = {
             local version = state.version
             if nil ~= config.site.variant then
                 local variant = config.site.variant
-                return f"{name}-{variant}-{version}"
+                -- NOTE: deliberately not using f-string => doesn't seem to
+                -- work properly here, don't know why though
+                return name .. "-" .. variant .. "-" .. version
             else
-                return f"{name}-{version}"
+                -- NOTE: deliberately not using f-string => doesn't seem to
+                -- work properly here, don't know why though
+                return name .. "-" .. version
             end
         end
     }
@@ -4293,7 +4297,7 @@ local function replace_all(str, map, config, state, escape)
     if nil == escape then escape = false end
     -- substitute `{NAME}`
     local env = tostring(str) -- ensure that we're operating on a string
-    log.trace(f"Applying replace_all to andidate: {env}")
+    log.trace(f"Applying replace_all to candidate: {env}")
     for k, v in pairs(map) do
         if v.check(config, state) then
             if escape then
@@ -4526,7 +4530,7 @@ local function ensure_stage_dir(name, variant, version)
     -- stage dir must be empty
     for file in string.gmatch(tostring(sh.ls(dn)), "[^\n]+") do
         log.trace(f"Deleting: {dn}/{file}")
-        sh.rm({r=true, f=true, f"{dn}/{file}"})
+        sh.rm("-r", "-f", f"{dn}/{file}") -- ensure order => don't use table
     end
 end
 
@@ -4605,7 +4609,7 @@ if settings.site.relocate then
             log.info(f"Relocating: {loc} to {dest}")
             if gears.file_exists(dest) then
                 log.warn(f"{dest} not free => deleting before `mv {loc} {dest}`")
-                sh.rm({r=true, f=true, dest})
+                sh.rm("-r", "-f", dest) -- ensure order => don't use table
             end
             sh.mv(loc, dest)
         end
@@ -4631,7 +4635,7 @@ end
 local function delete_stage_dir(name, variant, version)
     local dn = stage_dir_name(name, variant, version)
     log.trace(f"Cleaning up: {dn}")
-    sh.rm({r=true, f=true, dn})
+    sh.rm("-r", "-f", dn) -- ensure order => don't use table
 end
 
 -- remove staging directory (if post.clean is enabled)

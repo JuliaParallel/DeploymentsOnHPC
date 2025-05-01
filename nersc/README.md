@@ -434,6 +434,10 @@ helper scripts in `nersc/scripts/templates/bin`:
 
 ### Preferences Fact Finding
 
+These help develop and adapt site settings for julia. E.g. getting Julia to
+generate a reference implementation of the `LocalPreferences.toml` which can
+then be adapted to a template.
+
 ```
 nersc/util
 ├── get_mpi_settings.jl

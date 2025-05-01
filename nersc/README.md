@@ -17,30 +17,30 @@ nersc
 
 The overall dependency layout is summarized as follows:
 ```
-┌─────────────────┐                                                                                                    
-│┌────────────────┴┐                                                                                                   
-││      NERSC      │                                                                                                   
-││ Jupyter Kernels │                                                                                                   
-└┤                 │                                                                                                   
- └─────────────────┘                                                                                                   
-         ▲▲                                                                                                           
-         ││                                                                                                           
-┌────────┴┼───────┐                                                                                                   
-│┌────────┴───────┴┐    ┌─────────────────┐                                                                           
-││                 │    │                 │                                                                           
-││  Julia Modules  │◄───┤  Juliaup Module │                                                                           
-└┤                 │    │                 │                                                                           
- └─────────────────┘    └─────────────────┘                                                                           
-                                 ▲     ┌─────────────────┐                                                            
-                                 │     │┌────────────────┴┐                                                           
-                                 ├─────┤│      NERSC      │                                                           
-                                 ├─────┼┤Julia Environment│                                                           
-                                 │     └┤   Preferences   │                                                           
-                                 │      └─────────────────┘                                                           
-                                 │     ┌─────────────────┐                                                            
-                                 │     │      NERSC      │                                                            
-                                 └─────┤   Cudatoolkit   │                                                            
-                                       │      Module     │                                                            
+┌─────────────────┐                                         
+│┌────────────────┴┐                                        
+││      NERSC      │                                        
+││ Jupyter Kernels │                                        
+└┤                 │                                        
+ └─────────────────┘                                        
+         ▲▲                                                 
+         ││                                                 
+┌────────┴┼───────┐                                         
+│┌────────┴───────┴┐    ┌─────────────────┐                 
+││                 │    │                 │                 
+││  Julia Modules  │◄───┤  Juliaup Module │                 
+└┤                 │    │                 │                 
+ └─────────────────┘    └─────────────────┘                 
+                                 ▲     ┌─────────────────┐  
+                                 │     │┌────────────────┴┐ 
+                                 ├─────┤│      NERSC      │ 
+                                 ├─────┼┤Julia Environment│ 
+                                 │     └┤   Preferences   │ 
+                                 │      └─────────────────┘ 
+                                 │     ┌─────────────────┐  
+                                 │     │      NERSC      │  
+                                 └─────┤   Cudatoolkit   │  
+                                       │      Module     │  
                                        └─────────────────┘ 
 ```
 (arrows indicate dependencies)
@@ -262,7 +262,7 @@ cuda_version = ["11.7", "12.0", "12.2", "12.4"]
 ```
 Which is used to render into a `LocalPreferences.toml` using the template file
 `nersc/environments/templates/environment/LocalPreferences.toml`:
-```toml
+```jinja
 [MPIPreferences]
 {{#cray}}
 _format = "1.1"

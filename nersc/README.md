@@ -15,6 +15,36 @@ nersc
 └── util
 ```
 
+The overall dependency layout is summarized as follows:
+```
+┌─────────────────┐                                                                                                    
+│┌────────────────┴┐                                                                                                   
+││      NERSC      │                                                                                                   
+││ Jupyter Kernels │                                                                                                   
+└┤                 │                                                                                                   
+ └─────────────────┘                                                                                                   
+         ▲▲                                                                                                           
+         ││                                                                                                           
+┌────────┴┼───────┐                                                                                                   
+│┌────────┴───────┴┐    ┌─────────────────┐                                                                           
+││                 │    │                 │                                                                           
+││  Julia Modules  │◄───┤  Juliaup Module │                                                                           
+└┤                 │    │                 │                                                                           
+ └─────────────────┘    └─────────────────┘                                                                           
+                                 ▲     ┌─────────────────┐                                                            
+                                 │     │┌────────────────┴┐                                                           
+                                 ├─────┤│      NERSC      │                                                           
+                                 ├─────┼┤Julia Environment│                                                           
+                                 │     └┤   Preferences   │                                                           
+                                 │      └─────────────────┘                                                           
+                                 │     ┌─────────────────┐                                                            
+                                 │     │      NERSC      │                                                            
+                                 └─────┤   Cudatoolkit   │                                                            
+                                       │      Module     │                                                            
+                                       └─────────────────┘ 
+```
+(arrows indicate dependencies)
+
 The objective of this structure is to be as modular as possible: rather than
 having one monster script that will reinstall everything every at once, we
 install the different aspects of the Julia deployment at NERSC in 4 separate
@@ -126,45 +156,157 @@ for NERSC's systems.
 
 ### The Juliaup Module File
 
+Please refer to the [juliaup module file
+template](./juliaup/sm-config/module_template.lua) for the detailed
+implementation. This module manages both the `juliaup` binary, and also the
+[global preferences](#management-of-global-preferences) for NERSC.
 
+The modulefile is specifically designed to ensure that reloading the module
+works correctly after the software environment changes. Since many Julia
+packages depend on CUDA -- and which Julia packages will be used won't be known
+when the module is loaded -- the `juliaup` module has a dependency on
+`cudatoolkit`.
 
 ### Management of Global Preferences
 
+The Julia environments handled by the `juliaup` module are located in the
+`environments` to-level directory. They are machine generated whenever the
+NERSC programming environment changes (e.g. a new MPI or CUDA version is
+installed) -- therefore for the most part the following environments 
 ```
-├── environments
-│   ├── rendered
-│   │   ├── aocc.cray-mpich.cuda11.7
-│   │   ├── aocc.cray-mpich.cuda12.0
-│   │   ├── aocc.cray-mpich.cuda12.2
-│   │   ├── aocc.cray-mpich.cuda12.4
-│   │   ├── cray.cray-mpich.cuda11.7
-│   │   ├── cray.cray-mpich.cuda12.0
-│   │   ├── cray.cray-mpich.cuda12.2
-│   │   ├── cray.cray-mpich.cuda12.4
-│   │   ├── gnu.cray-mpich.cuda11.7
-│   │   ├── gnu.cray-mpich.cuda12.0
-│   │   ├── gnu.cray-mpich.cuda12.2
-│   │   ├── gnu.cray-mpich.cuda12.4
-│   │   ├── gnu.openmpi.cuda11.7
-│   │   ├── gnu.openmpi.cuda12.0
-│   │   ├── gnu.openmpi.cuda12.2
-│   │   ├── gnu.openmpi.cuda12.4
-│   │   ├── intel.cray-mpich.cuda11.7
-│   │   ├── intel.cray-mpich.cuda12.0
-│   │   ├── intel.cray-mpich.cuda12.2
-│   │   ├── intel.cray-mpich.cuda12.4
-│   │   ├── llvm.mpich.cuda11.7
-│   │   ├── llvm.mpich.cuda12.0
-│   │   ├── llvm.mpich.cuda12.2
-│   │   ├── llvm.mpich.cuda12.4
-│   │   ├── nvidia.cray-mpich.cuda11.7
-│   │   ├── nvidia.cray-mpich.cuda12.0
-│   │   ├── nvidia.cray-mpich.cuda12.2
-│   │   └── nvidia.cray-mpich.cuda12.4
-│   └── templates
-│       └── environment
+nersc/environments
+├── rendered
+│   ├── aocc.cray-mpich.cuda11.7
+│   ├── aocc.cray-mpich.cuda12.0
+│   ├── aocc.cray-mpich.cuda12.2
+│   ├── aocc.cray-mpich.cuda12.4
+│   ├── cray.cray-mpich.cuda11.7
+│   ├── cray.cray-mpich.cuda12.0
+│   ├── cray.cray-mpich.cuda12.2
+│   ├── cray.cray-mpich.cuda12.4
+│   ├── gnu.cray-mpich.cuda11.7
+│   ├── gnu.cray-mpich.cuda12.0
+│   ├── gnu.cray-mpich.cuda12.2
+│   ├── gnu.cray-mpich.cuda12.4
+│   ├── gnu.openmpi.cuda11.7
+│   ├── gnu.openmpi.cuda12.0
+│   ├── gnu.openmpi.cuda12.2
+│   ├── gnu.openmpi.cuda12.4
+│   ├── intel.cray-mpich.cuda11.7
+│   ├── intel.cray-mpich.cuda12.0
+│   ├── intel.cray-mpich.cuda12.2
+│   ├── intel.cray-mpich.cuda12.4
+│   ├── llvm.mpich.cuda11.7
+│   ├── llvm.mpich.cuda12.0
+│   ├── llvm.mpich.cuda12.2
+│   ├── llvm.mpich.cuda12.4
+│   ├── nvidia.cray-mpich.cuda11.7
+│   ├── nvidia.cray-mpich.cuda12.0
+│   ├── nvidia.cray-mpich.cuda12.2
+│   └── nvidia.cray-mpich.cuda12.4
+└── templates
+    └── environment
+```
+simply need to be copied the the Julia location whenever the module is updated.
+Each folder contain a barebones Julia project with
+[preferences](https://juliapackaging.github.io/Preferences.jl):
+```
+nersc/environments/rendered/gnu.cray-mpich.cuda12.4/
+├── LocalPreferences.toml
+└── Project.toml
 ```
 
+#### How Environments are Generated
+
+The Julia environments at NERSC are a outer product covering all combinations
+of PrgEnv, MPI, and CUDA versions. Each PrgEnv is configured by its own
+settings toml file, and all of them are rendered using the `render.sh`
+```
+nersc/environments/templates
+├── aocc_settings.toml
+├── cray_settings.toml
+├── environment
+│   ├── LocalPreferences.toml
+│   └── Project.toml
+├── gnu_settings.toml
+├── intel_settings.toml
+├── llvm_settings.toml
+├── nvidia_settings.toml
+├── openmpi_settings.toml
+└── render.sh
+```
+
+Please take a look at the [Simple
+Templates](https://gitlab.blaschke.science/nersc/simple-templates)
+documentation for a detailed explanation of how templates are rendered. Here we
+go through the `PrgEnv-gnu` as an example.
+
+The `render.sh` script starts with the GNU settings file
+`nersc/environments/templates/gnu_settings.toml`:
+```toml
+[constant]
+template_version = 1
+cray = true
+
+prg_env = "gnu"
+mpi_mod = "cray-mpich"
+
+mpi_abi = "MPICH"
+mpi_lib = "libmpi_gnu_123.so"
+srun_cmd = "srun"
+
+cclibs = '"cupti", "cudart", "cuda", "dsmml", "xpmem"'
+
+[product]
+cuda_version = ["11.7", "12.0", "12.2", "12.4"]
+```
+Which is used to render into a `LocalPreferences.toml` using the template file
+`nersc/environments/templates/environment/LocalPreferences.toml`:
+```toml
+[MPIPreferences]
+{{#cray}}
+_format = "1.1"
+{{/cray}}
+{{^cray}}
+__clear__ = ["preloads_env_switch"]
+_format = "1.0"
+{{/cray}}
+abi = "{{mpi_abi}}"
+binary = "system"
+cclibs = [{{{cclibs}}}]
+libmpi = "{{mpi_lib}}"
+mpiexec = "{{srun_cmd}}"
+{{#cray}}
+preloads = ["libmpi_gtl_cuda.so"]
+preloads_env_switch = "MPICH_GPU_SUPPORT_ENABLED"
+{{/cray}}
+{{^cray}}
+preloads = []
+{{/cray}}
+
+[CUDA_Runtime_jll]
+local = "true"
+version = "{{cuda_version}}"
+```
+Using the [Mustache template
+format](https://mustache.github.io/mustache.5.html), resuling in the concrete Julia preference file
+`nersc/environments/rendered/gnu.cray-mpich.cuda12.4/LocalPreferences.toml`
+```toml
+[MPIPreferences]
+_format = "1.1"
+abi = "MPICH"
+binary = "system"
+cclibs = ["cupti", "cudart", "cuda", "dsmml", "xpmem"]
+libmpi = "libmpi_gnu_123.so"
+mpiexec = "srun"
+preloads = ["libmpi_gtl_cuda.so"]
+preloads_env_switch = "MPICH_GPU_SUPPORT_ENABLED"
+
+[CUDA_Runtime_jll]
+local = "true"
+version = "12.4"
+```
+for this combination of MPI and CUDA.
 
 ## Preferred Julia Binaries
 

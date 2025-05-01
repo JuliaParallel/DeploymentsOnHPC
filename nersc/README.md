@@ -111,7 +111,8 @@ nersc/juliaup/
     └── settings.toml
 ```
 
-To install, either run: `./entrypoint.sh ./nersc/juliaup/render.sh` [or the `_tmp` equivalent]()
+To install, either run: `./entrypoint.sh ./nersc/juliaup/render.sh` [or the
+`_tmp` equivalent](#render-scripts-rendersh-vs-render_tmpsh).
 
 
 ### Management of Global Preferences

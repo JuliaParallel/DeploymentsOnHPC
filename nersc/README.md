@@ -340,6 +340,9 @@ To install, either run: `./entrypoint.sh ./nersc/julia/render.sh` [or the
 
 ## Jupyter Kernels
 
+Jupyter kernels are generated using Simple Templates located under
+`nersc/kernels/templates`. We also include several helper scripts (some of
+which are work-in-progress).
 ```
 nersc/kernels/
 ├── bootstrap.jl
@@ -356,9 +359,49 @@ nersc/kernels/
 └── user
     └── install_env_kernel.jl
 ```
+To generate the Julia modules, either run: `./entrypoint.sh
+./nersc/julia/render.sh` [or the `_tmp`
+equivalent](#render-scripts-rendersh-vs-render_tmpsh). This will render a
+single-threaded and a multi-threaded version.
+
+The [NERSC Julia Jupyter Kernel](./kernels/templates/jupyter/kernel.json) uses
+a [Kernel Helper](./kernels/templates/jupyter/kernel-help.sh) script in order
+to do 3 things:
+1. Load any dependent modules
+2. Set environment variables (e.g. `JULIA_NUM_THREADS`)
+3. Ensure that `IJulia` works and return its path.
+
+For the final step above, we use the following Bash code:
+```bash
+readarray -t ijulia_boostrap < <(julia {{{nersc_resource_dir}}}/bootstrap.jl)
+
+echo "Check-and-install returned following output:"
+_IFS=$IFS
+IFS=$'\n'
+for each in ${ijulia_boostrap[*]}
+do
+    echo $each
+done
+IFS=$_IFS
+
+JULIA_EXEC=$(which julia)
+KERNEL="${ijulia_boostrap[-1]}"
+```
+Which runs the `bootstrap.jl` script, prints every line of output (helpful for
+logging) and assumes that the last line of output is the path of the `IJulia`
+kernel.
 
 ### Julia Kernel Bootstrapping
 
+The Jupyter kernel requires [IJulia](https://github.com/JuliaLang/IJulia.jl),
+and we want to allow users to control as much about their default Julia
+environments. Therefore the strategy adopted here is to automatically add
+`IJulia` to their default Julia environment (it not added already), and to
+ensure that it works. To streamline this process the [NERSC Julia Jupyter
+Bootstrap Script](./kernels/bootstrap.jl) does 3 things:
+1. Checks if `IJulia` is installed. If not, runs `Pkg.add("IJulia")`.
+2. Checks if `IJulia` can be imported. If not, runs `Pkg.build("IJulia")`.
+3. Prints the path of the `IJulia` Jupyter kernel.
 
 ## Helper Scripts
 
@@ -372,7 +415,9 @@ nersc/scripts/
     ├── render.sh
     ├── render_tmp.sh
     └── settings.toml
+```
 
+```
 nersc/util
 ├── get_mpi_settings.jl
 └── mpi_proj

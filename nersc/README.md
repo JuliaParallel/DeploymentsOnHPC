@@ -111,7 +111,7 @@ template. The only difference between these scripts is that the `_tmp` version
 will deploy the rendered contents to `$__PREFIX__/tmp` whereas the "regular"
 version deploys to the `/global/common/software/nersc9`.
 
-We implement this behaviour using the following conventions:
+We implement this behavior using the following conventions:
 * If using Simple Modules, then the `local_settings.toml` file defines
 `destination`; if using Simple Templates, then the template `settings.toml`
 file defines `nersc_resource_dir` -- both of these "point" to
@@ -147,11 +147,11 @@ To install, either run: `./entrypoint.sh ./nersc/juliaup/render.sh` [or the
 
 Please refer to the [Simple Modules
 Documentation](https://gitlab.blaschke.science/nersc/simple-modules) on how the
-Juliaup module is built. In summary the process involves donwloading the
+Juliaup module is built. In summary the process involves downloading the
 `juliaup` binary and generating a module file. 
 
 **Important:** The Juliaup module file also configures the `JULIA_LOAD_PATH` to
-include NERSC-specific preferences. The idea is that a Julia user might perfer
+include NERSC-specific preferences. The idea is that a Julia user might prefer
 to install their own Julia versions via Juliaup -- however we (NERSC) still
 want to ensure that these local Julia versions "pick up" the correct settings
 for NERSC's systems.
@@ -163,7 +163,7 @@ template](./juliaup/sm-config/module_template.lua) for the detailed
 implementation. This module manages both the `juliaup` binary, and also the
 [global preferences](#management-of-global-preferences) for NERSC.
 
-The modulefile is specifically designed to ensure that reloading the module
+The module file is specifically designed to ensure that reloading the module
 works correctly after the software environment changes. Since many Julia
 packages depend on CUDA -- and which Julia packages will be used won't be known
 when the module is loaded -- the `juliaup` module has a dependency on
@@ -209,8 +209,8 @@ nersc/environments
 └── templates
     └── environment
 ```
-simply need to be copied the the Julia location whenever the module is updated.
-Each folder contain a barebones Julia project with
+simply need to be copied the Julia location whenever the module is updated.
+Each folder contain a bare bones Julia project with
 [preferences](https://juliapackaging.github.io/Preferences.jl):
 ```
 nersc/environments/rendered/gnu.cray-mpich.cuda12.4/
@@ -218,7 +218,7 @@ nersc/environments/rendered/gnu.cray-mpich.cuda12.4/
 └── Project.toml
 ```
 
-To gerenate these, please run `./entrypoint.sh
+To generate these, please run `./entrypoint.sh
 ./nersc/environments/templates/render.sh` (there is no `_tmp` equivalent).
 
 #### How Environments are Generated
@@ -294,7 +294,8 @@ local = "true"
 version = "{{cuda_version}}"
 ```
 Using the [Mustache template
-format](https://mustache.github.io/mustache.5.html), resuling in the concrete Julia preference file
+format](https://mustache.github.io/mustache.5.html), resulting in the concrete
+Julia preference file
 `nersc/environments/rendered/gnu.cray-mpich.cuda12.4/LocalPreferences.toml`
 ```toml
 [MPIPreferences]
@@ -355,6 +356,9 @@ nersc/kernels/
 └── user
     └── install_env_kernel.jl
 ```
+
+### Julia Kernel Bootstrapping
+
 
 ## Helper Scripts
 

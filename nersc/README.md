@@ -359,13 +359,13 @@ nersc/kernels/
 └── user
     └── install_env_kernel.jl
 ```
-To generate the Julia modules, either run: `./entrypoint.sh
-./nersc/julia/render.sh` [or the `_tmp`
+To generate the NERSC Julia Jupyter kernels, either run: `./entrypoint.sh
+./nersc/kernels/templates/render.sh` [or the `_tmp`
 equivalent](#render-scripts-rendersh-vs-render_tmpsh). This will render a
 single-threaded and a multi-threaded version.
 
 The [NERSC Julia Jupyter Kernel](./kernels/templates/jupyter/kernel.json) uses
-a [Kernel Helper](./kernels/templates/jupyter/kernel-help.sh) script in order
+a [Kernel Helper](./kernels/templates/jupyter/kernel-helper.sh) script in order
 to do 3 things:
 1. Load any dependent modules
 2. Set environment variables (e.g. `JULIA_NUM_THREADS`)
@@ -405,6 +405,10 @@ Bootstrap Script](./kernels/bootstrap.jl) does 3 things:
 
 ## Helper Scripts
 
+These are templates of simple helper scripts that make all of our lives just a
+little bit easier. They are not crucial for the site deployment, but improve
+the ergonomics around working with cutting edge modules.
+
 ```
 nersc/scripts/
 └── templates
@@ -416,6 +420,19 @@ nersc/scripts/
     ├── render_tmp.sh
     └── settings.toml
 ```
+
+To generate the helper scripts, either run: `./entrypoint.sh
+./nersc/scripts/templates/render.sh` [or the `_tmp`
+equivalent](#render-scripts-rendersh-vs-render_tmpsh). This will render all the
+helper scripts in `nersc/scripts/templates/bin`:
+1. `activate_beta.sh`: when sourced, this script puts the `julia/modules`
+   folder into the `MODULEPATH` -- allows users to try out newer versions of
+   julia before the new module files have passed review.
+2. `deactivate_beta.sh`: undoes `source activate_beta.sh`
+3. `install_beta.sh`: installs beta versions of the Jupyter kernels to
+   `~/.local/share/jupyter/kernels`
+
+### Preferences Fact Finding
 
 ```
 nersc/util

@@ -90,7 +90,6 @@ file defines `nersc_resource_dir` -- both of these "point" to
 direct the output to the right location -- don't forget to change these when
 you're developing your own site's render scripts.
 
-
 Use `render_tmp.sh` for local (userspace) testing -- once you're happy with
 your recipe, then use `render.sh` to deploy to the global NERSC software
 directory. You'll need to be a member of NERSC staff to use the later.
@@ -113,6 +112,20 @@ nersc/juliaup/
 
 To install, either run: `./entrypoint.sh ./nersc/juliaup/render.sh` [or the
 `_tmp` equivalent](#render-scripts-rendersh-vs-render_tmpsh).
+
+Please refer to the [Simple Modules
+Documentation](https://gitlab.blaschke.science/nersc/simple-modules) on how the
+Juliaup module is built. In summary the process involves donwloading the
+`juliaup` binary and generating a module file. 
+
+**Important:** The Juliaup module file also configures the `JULIA_LOAD_PATH` to
+include NERSC-specific preferences. The idea is that a Julia user might perfer
+to install their own Julia versions via Juliaup -- however we (NERSC) still
+want to ensure that these local Julia versions "pick up" the correct settings
+for NERSC's systems.
+
+### The Juliaup Module File
+
 
 
 ### Management of Global Preferences

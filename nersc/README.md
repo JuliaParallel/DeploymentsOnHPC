@@ -70,6 +70,8 @@ Installing Julia therefore has the following phases:
    Scripts](#helper-scripts) for more details.
 2. [Install Juliaup](#juliaup). This will also copy the preferences to a global
    location.
+3. Ensure that the `juliaup` module is in the `MODULEPATH` -- eg. using `module
+   use /path/to/juliaup/module`.
 3. [Install the preferred Julia Binaries](#preferred-julia-binaries). Note that
    these depend on the `juliaup` module being in the `MODULEPATH`
 4. Install the default [Jupyter "NERSC-Julia"](#jupyter-kernels) kernels and
@@ -216,6 +218,9 @@ nersc/environments/rendered/gnu.cray-mpich.cuda12.4/
 └── Project.toml
 ```
 
+To gerenate these, please run `./entrypoint.sh
+./nersc/environments/templates/render.sh` (there is no `_tmp` equivalent).
+
 #### How Environments are Generated
 
 The Julia environments at NERSC are a outer product covering all combinations
@@ -310,27 +315,62 @@ for this combination of MPI and CUDA.
 
 ## Preferred Julia Binaries
 
+Julia binaries are downloaded using the Juliaup module -- so you need to
+install this module first. If that module hasn't been deployed to production
+yet, you can run `module use /path/to/juliaup/module/folder`. Install is
+handled by Simple Modules, and is configured via the `sm-config` folder.
+
 ```
-├── julia
-│   └── sm-config
+nersc/julia
+├── render.sh
+├── render_tmp.sh
+└── sm-config
+    ├── install.sh
+    ├── local_settings.toml
+    ├── module_template.lua
+    └── settings.toml
 ```
+
+To install, either run: `./entrypoint.sh ./nersc/julia/render.sh` [or the
+`_tmp` equivalent](#render-scripts-rendersh-vs-render_tmpsh). If you're using
+`render.sh` the `juliaup` module will be located in
+`/global/common/software/nersc9/julia/module` -- and if you're using
+`render_tmp.sh` this will be located in `tmp/modules`.
 
 ## Jupyter Kernels
 
 ```
-├── kernels
-│   ├── julia-user
-│   ├── templates
-│   │   └── jupyter
-│   └── user
+nersc/kernels/
+├── bootstrap.jl
+├── julia-user
+├── templates
+│   ├── jupyter
+│   │   ├── kernel-helper.sh
+│   │   ├── kernel.json
+│   │   ├── logo-32x32.png
+│   │   └── logo-64x64.png
+│   ├── render.sh
+│   ├── render_tmp.sh
+│   └── settings.toml
+└── user
+    └── install_env_kernel.jl
 ```
 
 ## Helper Scripts
 
 ```
-├── scripts
-│   └── templates
-│       └── bin
-└── util
-    └── mpi_proj
+nersc/scripts/
+└── templates
+    ├── bin
+    │   ├── activate_beta.sh
+    │   ├── deactivate_beta.sh
+    │   └── install_beta.sh
+    ├── render.sh
+    ├── render_tmp.sh
+    └── settings.toml
+
+nersc/util
+├── get_mpi_settings.jl
+└── mpi_proj
+    └── Project.toml
 ```

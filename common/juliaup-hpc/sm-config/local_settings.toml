@@ -1,0 +1,5 @@
+name = "juliaup-hpc"
+
+relocate = true
+destination = "{SM_ROOT}/tmp/juliaup"
+modules = "{SM_ROOT}/tmp/modules"

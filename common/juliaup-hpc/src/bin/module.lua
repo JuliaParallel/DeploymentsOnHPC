@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- sets up environment and defines common helper functions
 --------------------------------------------------------------------------------
 local gears = require "gears"
@@ -71,7 +71,7 @@ local function find_installed_artifacts(prefix)
 end
 
 --------------------------------------------------------------------------------
--- manage environment for install and produced artifacts
+-- helper functions for manipulating string and lists
 --------------------------------------------------------------------------------
 
 local function split(inputstr, sep)
@@ -147,7 +147,7 @@ if nil ~= args.op_args then
 else
     log.debug("No operation arguments given")
 end
--- concatenate operator with operatior arguments
+-- concatenate operator with operator arguments
 local operation = args.op
 if n_op_args > 0 then
     operation = table.concat({args.op, op_arg_st}, " ")

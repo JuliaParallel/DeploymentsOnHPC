@@ -3192,7 +3192,7 @@ return M
 end
 end
 
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- sets up environment and defines common helper functions
 --------------------------------------------------------------------------------
 local gears = require "gears"
@@ -3265,7 +3265,7 @@ local function find_installed_artifacts(prefix)
 end
 
 --------------------------------------------------------------------------------
--- manage environment for install and produced artifacts
+-- helper functions for manipulating string and lists
 --------------------------------------------------------------------------------
 
 local function split(inputstr, sep)
@@ -3312,14 +3312,14 @@ end
 -- set "juliaup" as default dependency
 if nil == args.deps then
     log.warn(table.concat({
-        "The'--deps' CLI argument is ommited => autmatically adding 'juliaup-hpc'!",
+        "The'--deps' CLI argument is ommited => autmatically adding 'juliaup'!",
         "This is default behavior, add '--deps=' (blank argument) to disable",
         "all module dependencies"
     }, " "))
     -- default dependency
-    args.deps = {"juliaup-hpc"}
+    args.deps = {"juliaup"}
 end
--- parse dependencies: dependencies are given as a comma-seperated list => split
+-- parse dependencies: dependencies are given as a comma-separated list => split
 -- these into a table
 local n_deps  = 0
 local deps    = {}
@@ -3341,7 +3341,7 @@ if nil ~= args.op_args then
 else
     log.debug("No operation arguments given")
 end
--- concatenate operator with operatior arguments
+-- concatenate operator with operator arguments
 local operation = args.op
 if n_op_args > 0 then
     operation = table.concat({args.op, op_arg_st}, " ")

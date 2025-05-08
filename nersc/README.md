@@ -28,7 +28,7 @@ The overall dependency layout is summarized as follows:
 ┌────────┴┼───────┐                                     │                      
 │┌────────┴───────┴┐    ┌─────────────────┐    ┌────────┴────────┐             
 ││                 │    │                 │    │                 │             
-││  Julia Modules  │◄───┤  Juliaup Module ├───►|   Juliaup-HPC   │             
+││  Julia Modules  │◄───┤  Juliaup Module ├───►│   Juliaup-HPC   │             
 └┤                 │    │                 │    │                 │             
  └─────────────────┘    └─────────────────┘    └─────────────────┘             
                                  ▲     ┌─────────────────┐                     

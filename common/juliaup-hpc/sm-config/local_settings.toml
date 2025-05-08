@@ -1,5 +1,5 @@
-name = "juliaup-hpc"
+name = "juliaup"
 
 relocate = true
-destination = "{SM_ROOT}/tmp/juliaup"
-modules = "{SM_ROOT}/tmp/modules"
+destination = "{SM_ROOT}/juliaup"
+modules = "{SM_ROOT}/modules"

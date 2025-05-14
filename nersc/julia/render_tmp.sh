@@ -16,4 +16,6 @@ pushd ${__DIR__}
         templates/latest.lua                                         \
         templates/settings.toml                                      \
         "{{{julia_module_path}}}/{{module_name}}/latest.lua"
+
+    chmod -R o+r ${TMP_MODULE_DIR}
 popd

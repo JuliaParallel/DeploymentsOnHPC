@@ -11,9 +11,9 @@ whatis("URL: https://github.com/JuliaLang/juliaup")
 --- Requirements on External Dependencies
 -------------------------------------------------------------------------------
 
--- ensure that cudatoolkit is loaded -- even if the user load the `cpu` module,
--- as some Julia packages will depend on CUDA (and we can't control that these
--- don't get loaded from the module)
+-- ensure that cudatoolkit is loaded -- even if the user loads the `cpu`
+-- module, as some Julia packages will depend on CUDA (and we can't control
+-- that these don't get loaded from the module)
 depends_on("cudatoolkit")
 
 -------------------------------------------------------------------------------

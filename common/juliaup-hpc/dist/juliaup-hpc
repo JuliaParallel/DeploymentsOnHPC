@@ -3254,12 +3254,12 @@ local function find_installed_artifacts(prefix)
     --check if any artifacts have been found, if not raise error:
     if nil == next(installed_artifacts) then
         log.fatal("Did not find any artifacts!")
-        log.fatal(f"Prefix: {config.install.prefix}")
-        log.fatal(f"Format: {config.install.format}")
-        log.fatal(
-            f"ls {config.site.destination}:\n" ..
-            sh.ls(config.site.destination) .. "\n"
-        )
+        log.debug(f"Prefix: {prefix}")
+        log.debug(f"Format: {target}")
+        log.debug(f"ls {prefix}:")
+        for elt in string.gmatch(tostring(sh.ls(prefix)), "[^\n]+") do
+            log.debug(f"    {elt}")
+        end
         error("Artificat discovery error.")
     end
     return installed_artifacts
@@ -3362,6 +3362,14 @@ setenv("JULIAUP_DEPOT_PATH", args.dest)
 log.info(f"Running: {cmd}")
 os.execute(cmd)
 
+-- don't do anything further if not installing anything
+if "add" ~= args.op then
+    log.trace("Operation does not install artifacts => don't generate modules")
+    log.info(">>> DONE DONE DONE DONE DONE DONE <<<")
+    os.exit(0)
+end
+
+-- install mode => look for installed artifacts
 local installed_artifacts = find_installed_artifacts(args.dest .. "/juliaup")
 -- summarize installed versions
 log.info("Found following Julia versions installed by Juliaup:")
@@ -3378,7 +3386,7 @@ help("User-defined Julia module")
 
 whatis("Name: julia")
 whatis("Version: {{{INSTALL_VERSION}}}")
-whatis("URL: https://docs.nersc.gov/development/languages/julia/")
+whatis("URL: https://https://julialang.org/")
 
 {{#USE_DEPENDENCIES}}
 depends_on({{{DEPENDENCIES}}})

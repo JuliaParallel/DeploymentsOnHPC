@@ -9,6 +9,7 @@ pushd ${__DIR__}
         templates/settings.toml                                 \
         "{{{julia_module_path}}}/{{module_name}}/latest.lua"
 
+    # this is not very nice => find a way to get this path from settings.toml
     chmod -R o+r /global/common/software/nersc9/julia/modules
 popd
 

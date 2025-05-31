@@ -4704,6 +4704,11 @@ for version, _ in pairs(installed_versions) do
     end
     module_file:write(mod)
     module_file:close()
+
+    sh.__verbose = true
+    sh.chmod(      "o+rX", module_dir)
+    sh.chmod("-R", "o+rX", module_path)
+    sh.__verbose = false
 end
 
 -------------------------------------------------------------------------------

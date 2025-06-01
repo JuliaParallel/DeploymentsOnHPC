@@ -3997,7 +3997,7 @@ local function walk_path(pth, name)
     local paths = {}
     log.debug(f"Scanning: Path = {pth}, Module = {name}")
     for _, d in pairs(gears.read_dir(pth)) do
-        log.debug(f"Found: {d.name}, id_dir={d.is_dir}")
+        log.debug(f"Found: {d.name}, is_dir={d.is_dir}")
         if d.is_dir then
             log.trace(f"Entering: {d.name}")
             local s_libs = walk_path(
@@ -4067,9 +4067,26 @@ local function copy_resource(dest_spec, src, dst, tmpl_params)
     end
 
     log.debug(f"Copying {src} to {tmpl_dest}")
-    gears.cp(src, folder_dest)
+    gears.cp(src, tmpl_dest)
 
     return tmpl_dest
+end
+
+--------------------------------------------------------------------------------
+-- helper functions for manipulating string and lists
+--------------------------------------------------------------------------------
+
+local function split(inputstr, sep)
+    if sep == nil then
+        sep = "%s"
+    end
+
+    local t = {}
+    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+        table.insert(t, str)
+    end
+
+    return t
 end
 
 --------------------------------------------------------------------------------
@@ -4156,13 +4173,15 @@ settings, then the output will be written to: `out_1/put_2.txt`.
 parser:option("--overwrite", "JSON-formatted overwrite table, eg: '{\"key\": \"new value\"}'"):args(1)
 parser:option("--dir", "Assume template and output paths are directories"):args(0):default(false)
 parser:option("--resource", "Regex used to check if path should not be rendered"):args(1):default("")
+parser:option("--chmod", "Comma-separated list of chmod operations applied to rendered templates"):args(1):default("")
 
 parser:help_vertical_space(2)
 
 local args = parser:parse()
 
-print(args.dir)
-
+-------------------------------------------------------------------------------
+-- search for templates (if processing a directory)
+--------------------------------------------------------------------------------
 
 -- template and settings
 local template_files = {}
@@ -4193,6 +4212,10 @@ log.info("Settings:\n" .. settings_file)
 if nil ~= args.overwrite then
     log.info(f"Overwrite:\n".. args.overwrite)
 end
+
+-------------------------------------------------------------------------------
+-- process settings
+--------------------------------------------------------------------------------
 
 -- load settings from file
 local settings  = toml.parse(settings_file)
@@ -4356,8 +4379,12 @@ for k, v in pairs(settings.zip) do
 end
 
 -------------------------------------------------------------------------------
--- generate template
+-- render templates
 --------------------------------------------------------------------------------
+
+-- track which output files have been rendered
+local output_files = {}
+
 
 if nil ~= next(settings.product) then
     log.info("Generating product space templates ...")
@@ -4380,6 +4407,7 @@ if nil ~= next(settings.product) then
             end
             ---@diagnostic disable-next-line: unused-local
             local tmpl_dest = save_template(output, tmpl_inst, tmpl)
+            table.insert(output_files, tmpl_dest)
             log.info(f"Template generated at: {tmpl_dest}")
         end
 
@@ -4387,6 +4415,7 @@ if nil ~= next(settings.product) then
             log.info(f"Copying resource file {src} => {dst}")
             ---@diagnostic disable-next-line: unused-local
             local resource_dst = copy_resource(args.output, src, dst, tmpl)
+            table.insert(output_files, resource_dst)
             log.info(f"Copied resource to: {resource_dst}")
         end
     end
@@ -4409,6 +4438,7 @@ if nil ~= next(settings.zip) then
             end
             ---@diagnostic disable-next-line: unused-local
             local tmpl_dest = save_template(output, tmpl_inst, tmpl)
+            table.insert(output_files, tmpl_dest)
             log.info(f"Template generated at: {tmpl_dest}")
         end
 
@@ -4416,11 +4446,27 @@ if nil ~= next(settings.zip) then
             log.info(f"Copying resource file {src} => {dst}")
             ---@diagnostic disable-next-line: unused-local
             local resource_dst = copy_resource(args.output, src, dst, tmpl)
+            table.insert(output_files, resource_dst)
             log.info(f"Copied resource to: {resource_dst}")
         end
     end
 end
 
+--------------------------------------------------------------------------------
+-- set the correct permission bits
+--------------------------------------------------------------------------------
+
+if "" ~= args.chmod then
+    log.info("chmod'ing rendered files")
+    for _, v in pairs(split(args.chmod, ",")) do
+        log.debug("Applying chmod perm: " .. v)
+        for _, out_file in pairs(output_files) do
+            local chmod_str = "chmod -R " .. v .. " " .. out_file
+            log.debug("Running: " .. chmod_str)
+            os.execute(chmod_str)
+        end
+    end
+end
 
 --------------------------------------------------------------------------------
 -- DONE! (the end)

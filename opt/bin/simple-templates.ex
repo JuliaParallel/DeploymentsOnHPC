@@ -4170,10 +4170,18 @@ Path of output file. This can contain mustache placeholders. For example if give
 output path `out_{{x}}/put_{{y}}.txt`, where `x=1` and `y=2` are parameters in the
 settings, then the output will be written to: `out_1/put_2.txt`.
 ]])
-parser:option("--overwrite", "JSON-formatted overwrite table, eg: '{\"key\": \"new value\"}'"):args(1)
-parser:option("--dir", "Assume template and output paths are directories"):args(0):default(false)
-parser:option("--resource", "Regex used to check if path should not be rendered"):args(1):default("")
-parser:option("--chmod", "Comma-separated list of chmod operations applied to rendered templates"):args(1):default("")
+parser:option(
+    "--overwrite", "JSON-formatted overwrite table, eg: '{\"key\": \"new value\"}'"
+):args(1)
+parser:option(
+    "--dir", "Directory mode: <template> must be a directory tree, every contained within is treated as a template file"
+):args(0):default(false)
+parser:option(
+    "--resource", "Regex used to check if path should not be rendered. This is only used in directory mode"
+):args(1):default("")
+parser:option(
+    "--chmod", "Comma-separated list of chmod operations applied to rendered templates"
+):args(1):default("")
 
 parser:help_vertical_space(2)
 

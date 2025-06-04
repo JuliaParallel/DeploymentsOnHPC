@@ -8,9 +8,12 @@ useful for HPC as possible (surely beats `wget`).
 
 ## TL;DR: Using Juliaup-HPC
 
+The Julia multiplexing features of Juliaup don't work well on HPC systems.
 Juliaup-HPC wraps `juliaup` (see requirements and installation instructions
-below.). All commands are the same as `juliaup`, and `juliaup-hpc` adds the
-`--dest` and `--deps` CLI arguments:
+below) generating module files whenever a new julia version is added by
+`juliaup`. This allows Julia version installed by `juliaup-hpc` to be used by
+environment module system. All commands are the same as `juliaup`, and
+`juliaup-hpc` adds the `--dest` and `--deps` CLI arguments:
 
 ```
 Usage: juliaup-hpc [--dest <dest>] [-h] <op> [<op_args>] ...

@@ -1,0 +1,5 @@
+name = "rust"
+
+relocate = true
+destination = "{SM_ROOT}/tmp/rust"
+modules = "{SM_ROOT}/tmp/modules"

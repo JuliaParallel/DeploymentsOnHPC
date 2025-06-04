@@ -1,0 +1,27 @@
+[env]
+RUSTUP_HOME = "{SITE_DESTINATION}/rustup"
+CARGO_HOME = "{SITE_DESTINATION}/cargo"
+INSTALL_DIR = "{SITE_DESTINATION}"
+INSTALL_RESOURCES = "{SITE_CONFIG_DIR}"
+INSTALL_VERSION = "{INSTALL_VERSION}"
+
+[install]
+versions = ["stable"]
+prefix = "{SITE_DESTINATION}/rustup/toolchains/"
+# note: this is Lua regex: you will need to escape - and + (using %)
+format = "{INSTALL_VERSION}%-.*$"
+# (optional) relocate after install
+destination = "{SITE_DESTINATION}/{INSTALL_VERSION}"
+stage = false
+
+[module]
+CARGO_PATH = "{SITE_DESTINATION}/cargo/bin"
+RUST_PATH = "{INSTALL_DIR}/bin"
+RUST_LD_LIBRARY_PATH = "{INSTALL_DIR}/lib"
+
+[post]
+# toggles mandatory relocate if `stage` and `clean` are true. If the install
+# script already relocates the package, then we can set `safe = false`
+safe = true
+# delete staging aread after successful install
+clean = false

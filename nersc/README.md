@@ -50,10 +50,11 @@ having one monster script that will reinstall everything every at once, we
 install the different aspects of the Julia deployment at NERSC in 4 separate
 phases (see below).
 
-Note that this modular structure follows a very important principle: we decouple
-the Julia configuration (managed by the [Juliaup](#Juliaup) module) from the
-preferred Julia binaries modules. This way crucial global preferences (e.g.
-where to find `libmpi.so`) can be combined with a users own Julia deployment. 
+Note that this modular structure follows a very important principle: we
+decouple the Julia configuration (managed by the [Juliaup](#Juliaup) module)
+from the preferred Julia binaries modules. This way crucial global preferences
+(e.g. where to find `libmpi.so`) can be combined with a users own Julia
+deployment. 
 
 In addition to the Julia deployment, we also include deployment scripts for
 [MPItrampoline](https://github.com/eschnett/MPItrampoline) -- which can be used
@@ -81,24 +82,24 @@ Installing Julia therefore has the following phases:
 
 Why not ask the user to download and configure their own install? Or better
 still: use [JUHPC](https://github.com/JuliaParallel/JUHPC)? The main challenge
-we face at NERSC is two-fold: a) there is a combinatorial explosion of different
-system dependencies (mainly MPI implementations and CUDA versions) which may
-change at every maintenance; and b) NERSC hosts a central Jupyter install
-(Really? You where going to ssh tunnel a webserver with the ability to execute
-arbitrary code?! Let's see what security has to say about that!).
+we face at NERSC is two-fold: a) there is a combinatorial explosion of
+different system dependencies (mainly MPI implementations and CUDA versions)
+which may change at every maintenance; and b) NERSC hosts a central Jupyter
+install (Really? You where going to ssh tunnel a webserver with the ability to
+execute arbitrary code?! Let's see what security has to say about that!).
 
 While possible to simply install and configure your own version of Julia in
 userspace, and then hook it up with the NERSC Jupyter Hub, such a configuration
 is time consuming and brittle: if the CUDA version changes during a maintenance
 then the userspace configurations need to be refreshed, possibly requiring
-Jupyter kernels to be reinstalled, etc. In the aggregate, such a situation costs
-considerable time and effort among staff and users, often leading to frustration
--- we know, as we've been here before.
+Jupyter kernels to be reinstalled, etc. In the aggregate, such a situation
+costs considerable time and effort among staff and users, often leading to
+frustration -- we know, as we've been here before.
 
-This is compounded in part because NERSC also manages multiple systems (the Data
-Transfer Nodes, Spin, and Testbed systems) in addition to at least one
-production supercomputer. Each of these systems have different default versions,
-but the _same_ home folder.
+This is compounded in part because NERSC also manages multiple systems (the
+Data Transfer Nodes, Spin, and Testbed systems) in addition to at least one
+production supercomputer. Each of these systems have different default
+versions, but the _same_ home folder.
 
 Hence the solution presented here is to "tie" the Julia configuration into the
 Lmod-based module system.

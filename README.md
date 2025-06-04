@@ -1,10 +1,24 @@
 # A Collection of Julia Deployments on HPC Systems
 
-A collection of module-centric Julia deployments on HPC systems.
+This is a collection of module-centric Julia deployments on HPC systems. A
+common challenge faced by software deployments on shared systems is interacting
+with other installed system software. Most HPC systems therefore come with an
+environment modules system -- which is the preferred way to manage HPC software
+environments. This repo shows how templated environment modules and settings
+files can be used to install and manage Julia on a shared file systems.
 
-## How to use this Repository
+## Objectives, Challenges, and how to use this Repository
 
-Resuirements:
+The environment modules on HPC systems can be very complex, often presenting
+users with different choices in toolchains and versions. A common example is
+that users can select different MPI implementations, and different GPU runtime
+versions. This can lead to a combinatorial explosion of different system
+dependencies.
+
+Hence the solution presented here is to "tie" the Julia configuration into the
+environment module system.
+
+Requirements:
 1. [Lua](https://www.lua.org/download.html) and
    [luaposix](https://github.com/luaposix/luaposix)
 2. [Lmod](https://lmod.readthedocs.io/en/latest/030_installing.html) or
@@ -12,10 +26,12 @@ Resuirements:
 
 ### Use the Entrypoint
 
-Bash kinda sucks at finding related files -- an imperfect (but acceptable)
-solution is to use a launcher script: [entrypoint.sh](./entrypoint.sh). For
-example, if you want to render all Julia environment configuration files,
-please run: 
+We want to ensure that the installers have have predictable behavior,
+regardless of the execution context (e.g. where scripts are being run from).
+Bash kinda sucks at this (especially when handling relative paths) -- an
+imperfect (but acceptable) solution is to use a launcher script:
+[entrypoint.sh](./entrypoint.sh). For example, if you want to render all Julia
+environment configuration files, please run:
 ```
 $ ./entrypoint.sh nersc/environments/templates/render.sh 
 ```
@@ -113,6 +129,11 @@ While not automagically updating `JULIA_LOAD_PATH` when `ENV_NAME` changes --
 this approach allows a `module reload` to fix the `JULIA_LOAD_PATH`.
 
 ## Deployments on HPC Facilities
+
+### Common Components
+
+Several components of this install are common across many HPC facilities. You
+can find a [description of these here](./common/README.md).
 
 ### NERSC
 

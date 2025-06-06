@@ -11,3 +11,4 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-mod
 
 # Uses Rustup to install the latests stable version
 ${CARGO_HOME}/bin/rustup install stable
+${CARGO_HOME}/bin/rustup set auto-self-update disable

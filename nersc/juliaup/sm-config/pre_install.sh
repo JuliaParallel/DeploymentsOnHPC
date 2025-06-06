@@ -1,0 +1,1 @@
+../../../common/juliaup-hpc/sm-config/pre_install.sh

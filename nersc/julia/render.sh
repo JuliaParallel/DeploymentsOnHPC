@@ -4,12 +4,10 @@ set -eu
 pushd ${__DIR__}
     ${__PREFIX__}/opt/bin/simple-modules.ex sm-config
 
-    ${__PREFIX__}/opt/bin/simple-templates.ex                   \
-        templates/latest.lua                                    \
-        templates/settings.toml                                 \
-        "{{{julia_module_path}}}/{{module_name}}/latest.lua"
-
-    # this is not very nice => find a way to get this path from settings.toml
-    chmod -R o+r /global/common/software/nersc9/julia/modules
+    ${__PREFIX__}/opt/bin/simple-templates.ex              \
+        --chmod "g+rX,o+rX,g-w,o-w"                        \
+        templates/1.0.lua                                  \
+        templates/settings.toml                            \
+        "{{{julia_module_path}}}/{{module_name}}/1.0.lua"
 popd
 

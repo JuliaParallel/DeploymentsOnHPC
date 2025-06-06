@@ -7,6 +7,7 @@ whatis("Name: juliaup")
 whatis("Version: {{{INSTALL_VERSION}}}")
 whatis("URL: https://github.com/JuliaLang/juliaup")
 
+{{#use_dependencies}}
 -------------------------------------------------------------------------------
 --- Requirements on External Dependencies
 -------------------------------------------------------------------------------
@@ -15,6 +16,7 @@ whatis("URL: https://github.com/JuliaLang/juliaup")
 -- module, as some Julia packages will depend on CUDA (and we can't control
 -- that these don't get loaded from the module)
 depends_on("cudatoolkit")
+{{/use_dependencies}}
 
 -------------------------------------------------------------------------------
 --- JULIAUP Binary

@@ -4201,6 +4201,8 @@ local posix    = require "posix"
 -- manage environment for install and produced artifacts
 --------------------------------------------------------------------------------
 
+local SM_PRE_INSTALL_VERSION = "SM-PRE-INSTALL"
+
 local subsitutions = {
     SITE_DESTINATION = {
         check = function(_, _)
@@ -4285,6 +4287,25 @@ local subsitutions = {
                 return name .. "-" .. version
             end
         end
+    },
+    PRE_STAGE_DIR = {
+        check = function(config, _)
+            return (true == config.install.stage)
+        end,
+        get = function(config, state)
+            local name = config.site.name
+            local version = SM_PRE_INSTALL_VERSION
+            if nil ~= config.site.variant then
+                local variant = config.site.variant
+                -- NOTE: deliberately not using f-string => doesn't seem to
+                -- work properly here, don't know why though
+                return name .. "-" .. variant .. "-" .. version
+            else
+                -- NOTE: deliberately not using f-string => doesn't seem to
+                -- work properly here, don't know why though
+                return name .. "-" .. version
+            end
+        end
     }
 }
 
@@ -4295,9 +4316,16 @@ end
 
 local function replace_all(str, map, config, state, escape)
     if nil == escape then escape = false end
-    -- substitute `{NAME}`
-    local env = tostring(str) -- ensure that we're operating on a string
-    log.trace(f"Applying replace_all to candidate: {env}")
+    -- ensure that we're operating on a string
+    if "string" ~= type(str) then
+        log.trace(f"Skipping: '{str}' => not a string")
+        return str
+    end
+    -- make a copy of the string (this is probably paranoid, but we care about
+    -- stafety over performance here anyway)
+    local env = str
+    -- substitute all occurances of `{NAME}` in the `map`
+    log.trace(f"Applying replace_all to candidate: {str}")
     for k, v in pairs(map) do
         if v.check(config, state) then
             if escape then
@@ -4318,8 +4346,9 @@ end
 
 local function setenv(map, config, state)
     for k, v in pairs(config.env) do
-        -- substitute `{NAME}`
-        local env = replace_all(v, map, config, state)
+        -- substitute `{NAME}`. Converting non-string types to string (required
+        -- by posix.setenv)
+        local env = tostring(replace_all(v, map, config, state))
         -- set environment
         log.info(f"Setting environment: {k}={env}")
         posix.setenv(k, env)
@@ -4419,6 +4448,16 @@ local args = parser:parse()
 local config_dir = gears.realdir(args.config_dir)
 local sm_root = args.sm_root
 if nil ~= sm_root then
+    -- ensure that <sm_root> is not a file
+    if gears.file_exists(sm_root) then
+        log.fatal(f"SM_ROOT={sm_root} is a file, but needs to be a directory!")
+        os.exit(1)
+    end
+    if not gears.dir_exists(sm_root) then
+        log.warn(f"SM_ROOT={sm_root} does not exist, creating...")
+        -- ensure that the <sm_root> directory exists
+        sh.mkdir("-p", sm_root) -- ensure order => don't use table
+    end
     sm_root = gears.realdir(sm_root)
 end
 
@@ -4511,7 +4550,6 @@ if (true == settings.install.stage) and (true == settings.post.clean) then
     end
 end
 
-
 --------------------------------------------------------------------------------
 -- run {pre,post}-installer
 --------------------------------------------------------------------------------
@@ -4540,7 +4578,7 @@ if gears.file_exists(config_dir .. "/pre_install.sh") then
 
     setenv(
         subsitutions, settings,
-        {config_dir=config_dir, version="SM-PRE-INSTALL"}
+        {config_dir=config_dir, version=SM_PRE_INSTALL_VERSION}
     )
     sh.__verbose = true
     sh("bash"){config_dir .. "/pre_install.sh"}
@@ -4644,6 +4682,10 @@ if true == settings.post.clean then
     for _, version in pairs(settings.install.versions) do
         delete_stage_dir(settings.site.name, settings.site.variant, version)
     end
+    -- Also delete any stage dir used by pre_install.sh
+    delete_stage_dir(
+        settings.site.name, settings.site.variant, SM_PRE_INSTALL_VERSION
+    )
 end
 
 -------------------------------------------------------------------------------

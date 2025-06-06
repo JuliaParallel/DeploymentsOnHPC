@@ -5,6 +5,6 @@ pushd ${__DIR__}
     mkdir -p ${__PREFIX__}/tmp
     ${__PREFIX__}/opt/bin/simple-modules.ex  \
         sm-config/                           \
-        --destination=${__PREFIX__}/tmp      \
+        --destination=${__PREFIX__}/tmp/     \
         --modules=${__PREFIX__}/tmp/modules
 popd

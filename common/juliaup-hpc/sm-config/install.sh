@@ -11,10 +11,25 @@ fi
 
 cd gh
 
-cargo build --release --no-default-features
+${CARGO_HOME}/bin/cargo build --release --no-default-features
 mkdir -p ${STAGE_DIR}/dist
-cargo install --path . --root ../dist
+${CARGO_HOME}/bin/cargo install --path . --root ../dist
 
 cd ${INSTALL_ROOT}
 mkdir -p scripts
-cp ${INSTALL_SRC}/dist/juliaup-hpc scripts/
+cp ${INSTALL_SRC}/../dist/juliaup-hpc scripts/
+
+if [[ ${COPY_JULIA_ENVS} == true ]]
+then
+    echo "ATTENTION: Using pre-defined Julia environments"
+    if [[ -d ${SITE_CONFIG_DIR}/${JULIA_ENVS_SRC} ]]
+    then
+        mkdir -p ${INSTALL_DIR}/${JULIA_ENVS_DST}
+        cp -r \
+            ${SITE_CONFIG_DIR}/${JULIA_ENVS_SRC}/* \
+            ${INSTALL_DIR}/${JULIA_ENVS_DST}
+    else
+        echo "WARNING: JULIA_ENVS_SRC=${SITE_CONFIG_DIR}/${JULIA_ENVS_SRC} does not exist!"
+    fi
+fi
+

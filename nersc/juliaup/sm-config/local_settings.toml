@@ -1,5 +1,5 @@
 name = "juliaup"
 
-relocate = false
+relocate = true
 destination = "/global/common/software/nersc9/julia"
 modules = "/global/common/software/nersc9/julia/modules"

@@ -1,16 +1,23 @@
 [env]
+# Juliaup install destination
 JULIA_DEPOT_PATH = "{SITE_DESTINATION}/depot"
 JULIAUP_DEPOT_PATH = "{SITE_DESTINATION}/depot"
-
-RUSTUP_HOME = "{SITE_DESTINATION}/rustup"
-CARGO_HOME = "{SITE_DESTINATION}/cargo"
-
+# Temporary Rust Install (used to build the Juliaup executable)
+RUSTUP_HOME = "{PRE_STAGE_DIR}/rustup"
+CARGO_HOME = "{PRE_STAGE_DIR}/cargo"
+# Helper env vars for the (pre_)install.sh scripts
 INSTALL_VERSION = "{INSTALL_VERSION}"
 INSTALL_ROOT = "{SITE_DESTINATION}"
 INSTALL_SRC = "{SITE_CONFIG_DIR}"
 STAGE_DIR = "{STAGE_DIR}"
-
+# Source of Juliaup
 GH_PROJECT = "https://github.com/JuliaLang"
+# Parameters controlling if any Julia environments are installed alongside of
+# the Juliaup executable (note: the module file still needs to know how to use
+# these)
+COPY_JULIA_ENVS = false
+JULIA_ENVS_SRC  = "../../environments/rendered"
+JULIA_ENVS_DST  = "../environments"
 
 [install]
 versions = ["main"]

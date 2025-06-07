@@ -7,7 +7,7 @@ then
 fi
 
 # Depends on the juliaup module already being loaded:
-module load juliaup/stable
+module load juliaup
 
 # Uses Juliaup to install a specific version
 juliaup add ${INSTALL_VERSION} || true

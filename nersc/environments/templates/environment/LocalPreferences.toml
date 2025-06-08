@@ -8,7 +8,12 @@ _format = "1.0"
 {{/cray}}
 abi = "{{mpi_abi}}"
 binary = "system"
+{{#cray}}
 cclibs = [{{{cclibs}}}]
+{{/cray}}
+{{^cray}}
+cclibs = []
+{{/cray}}
 libmpi = "{{mpi_lib}}"
 mpiexec = "{{srun_cmd}}"
 {{#cray}}

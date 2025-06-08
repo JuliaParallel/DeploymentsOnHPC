@@ -1,15 +1,21 @@
 [constant]
-template_version = 1
+template_version = 2
 cray = false
 
 prg_env = "llvm"
-mpi_mod = "mpich"
-
-mpi_abi = "MPICH"
 mpi_lib = "libmpi"
-srun_cmd = "srun"
-
+# ignored by non-cray modules
 cclibs = ''
 
-[product]
-cuda_version = ["11.7", "12.0", "12.2", "12.4"]
+[zip]
+
+mpi_mod = ["mpich",   "mpich",   "mpich",   "mpich",
+           "openmpi", "openmpi", "openmpi", "openmpi"]
+mpi_abi = ["MPICH",   "MPICH",   "MPICH",  "MPICH",
+           "OpenMPI", "OpenMPI", "OpenMPI" "OpenMPI"]
+
+srun_cmd = ["srun",            "srun",            "srun",            "srun",
+            "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix"]
+
+cuda_version = ["11.7", "12.0", "12.2", "12.4",
+                "11.7", "12.0", "12.2", "12.4"]

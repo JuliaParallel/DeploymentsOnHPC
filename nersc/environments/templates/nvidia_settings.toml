@@ -1,15 +1,23 @@
 [constant]
-template_version = 1
-cray = true
+template_version = 2
 
 prg_env = "nvidia"
-mpi_mod = "cray-mpich"
-
-mpi_abi = "MPICH"
-mpi_lib = "libmpi_nvidia.so"
-srun_cmd = "srun"
-
+# ignored by non-cray modules
 cclibs = '"darshan", "lustreapi", "z", "cupti", "cudart", "cuda", "sci_nvidia_mpi", "sci_nvidia", "dl", "dsmml", "xpmem"'
 
-[product]
-cuda_version = ["11.7", "12.0", "12.2", "12.4"]
+[zip]
+cray = [true,  true,  true,  true,
+        false, false, false, false]
+
+mpi_mod = ["cray-mpich", "cray-mpich", "cray-mpich", "cray-mpich",
+           "openmpi",    "openmpi",    "openmpi",    "openmpi"]
+mpi_abi = ["MPICH",   "MPICH",   "MPICH",  "MPICH",
+           "OpenMPI", "OpenMPI", "OpenMPI" "OpenMPI"]
+mpi_lib = ["libmpi_nvidia.so", "libmpi_nvidia.so", "libmpi_nvidia.so", "libmpi_nvidia.so",
+           "libmpi",           "libmpi",           "libmpi",           "libmpi"]
+
+srun_cmd = ["srun",            "srun",            "srun",            "srun",
+            "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix"]
+
+cuda_version = ["11.7", "12.0", "12.2", "12.4",
+                "11.7", "12.0", "12.2", "12.4"]

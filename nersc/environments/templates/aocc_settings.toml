@@ -2,7 +2,6 @@
 template_version = 2
 
 prg_env = "aocc"
-
 # ignored by non-cray modules
 cclibs = '"darshan", "lustreapi", "z", "cupti", "cudart", "cuda", "sci_aocc_mpi", "sci_aocc", "dl", "dsmml", "xpmem"'
 

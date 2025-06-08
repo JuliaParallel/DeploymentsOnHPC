@@ -9,7 +9,7 @@ mpi_abi = "MPICH"
 mpi_lib = "libmpi_nvidia.so"
 srun_cmd = "srun"
 
-cclibs = '"cupti", "cudart", "cuda", "sci_nvidia_mpi", "sci_nvidia", "dl", "dsmml", "xpmem"'
+cclibs = '"darshan", "lustreapi", "z", "cupti", "cudart", "cuda", "sci_nvidia_mpi", "sci_nvidia", "dl", "dsmml", "xpmem"'
 
 [product]
 cuda_version = ["11.7", "12.0", "12.2", "12.4"]

@@ -2,7 +2,7 @@
 _format = "1.1"
 abi = "MPICH"
 binary = "system"
-cclibs = ["cupti", "cudart", "cuda", "sci_intel_mpi", "sci_intel", "dl", "dsmml", "xpmem"]
+cclibs = ["darshan", "lustreapi", "z", "cupti", "cudart", "cuda", "sci_intel_mpi", "sci_intel", "dl", "dsmml", "xpmem"]
 libmpi = "libmpi_intel.so"
 mpiexec = "srun"
 preloads = ["libmpi_gtl_cuda.so"]

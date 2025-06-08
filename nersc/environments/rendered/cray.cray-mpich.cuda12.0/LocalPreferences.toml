@@ -2,7 +2,7 @@
 _format = "1.1"
 abi = "MPICH"
 binary = "system"
-cclibs = ["cupti", "cudart", "cuda", "sci_cray_mpi", "sci_cray", "dl", "dsmml", "xpmem", "stdc++", "pgas-shmem", "quadmath", "modules", "fi", "craymath", "f", "u", "csup"]
+cclibs = ["darshan", "lustreapi", "z", "cupti", "cudart", "cuda", "sci_cray_mpi", "sci_cray", "dl", "dsmml", "xpmem", "stdc++", "pgas-shmem", "quadmath", "modules", "fi", "craymath", "f", "u", "csup"]
 libmpi = "libmpi_cray.so"
 mpiexec = "srun"
 preloads = ["libmpi_gtl_cuda.so"]

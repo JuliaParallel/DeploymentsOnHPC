@@ -1658,12 +1658,13 @@ end
 
 
 function M.file_exists(name)
-   local f = io.open(name, "r")
-   if f == nil then
-       return false
-   end
-   io.close(f)
-   return true
+    -- on some operating systems io.iopen on directories does not return nil
+    if M.isdir(name) then return false end
+
+    local f = io.open(name, "r")
+    if nil == f then return false end
+    io.close(f)
+    return true
 end
 
 

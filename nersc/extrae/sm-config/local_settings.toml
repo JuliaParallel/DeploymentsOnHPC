@@ -1,0 +1,5 @@
+name = "extrae"
+
+relocate = false
+destination = "/global/common/software/nersc9/extrae"
+modules = "/global/common/software/nersc9/mpitrampoline/extrae"

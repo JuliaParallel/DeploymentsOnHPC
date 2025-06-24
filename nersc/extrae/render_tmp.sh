@@ -4,7 +4,7 @@ set -eu
 pushd ${__DIR__}
 
 # prg_envs=("aocc" "cray" "gnu" "intel" "nvidia" "llvm" "openmpi")
-prg_envs=("gnu")
+prg_envs=("gnu" "nvidia") # make gnu go first
 for prg_env in ${prg_envs[@]}
 do
     mkdir -p ${__PREFIX__}/tmp

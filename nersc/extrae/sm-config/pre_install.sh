@@ -67,6 +67,7 @@ wget ${PAPI_SOURCE}/${PAPI_NAME}.tar.gz
 tar -xvf ${PAPI_NAME}.tar.gz
 pushd ${PAPI_NAME}/src
 
+export PAPI_CUDA_ROOT=${CUDA_HOME}
 export CC=$(which gcc) # only seems to work with gcc
 export F77=$(which gfortran) # only seems to work with gfortran
 

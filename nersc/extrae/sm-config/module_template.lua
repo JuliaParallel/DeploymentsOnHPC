@@ -8,4 +8,5 @@ whatis("Name: extrae")
 whatis("Version: {{{INSTALL_VERSION}}}")
 whatis("URL: https://tools.bsc.es/extrae")
 
+depends_on("PrgEnv".."{{{INSTALL_VARIANT}}}")
 prepend_path("PATH", "{{{EXTRAE_PATH}}}")

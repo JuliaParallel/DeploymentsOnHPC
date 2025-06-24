@@ -4,7 +4,14 @@ set -eu
 # Location of any pre-install generated build dependencies
 #
 ARTIFACTS=${INSTALL_DIR}/deps/
-mkdir -p ${ARTIFACTS}
+if [[ -d ${ARTIFACTS} ]]
+then
+    # These dependencies are slow as to install (mainly binutils) -- so skip
+    # this entirely if the ARTIFACTS directory already exists
+    exit 0
+else
+    mkdir -p ${ARTIFACTS}
+fi
 #------------------------------------------------------------------------------
 
 #______________________________________________________________________________

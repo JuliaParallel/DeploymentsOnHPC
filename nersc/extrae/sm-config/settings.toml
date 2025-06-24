@@ -43,4 +43,4 @@ EXTRAE_PATH = "{INSTALL_DIR}"
 # script already relocates the package, then we can set `safe = false`
 safe = false
 # delete staging aread after successful install
-clean = false
+clean = true

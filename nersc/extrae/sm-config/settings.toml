@@ -2,20 +2,31 @@
 INSTALL_NAME = "{SITE_NAME}"
 INSTALL_DIR = "{SITE_DESTINATION}"
 INSTALL_VERSION = "{INSTALL_VERSION}"
+INSTALL_VARIANT = "{SITE_VARIANT}"
 INSTALL_VERSION_VARIANT = "{INSTALL_VERSION_VARIANT}"
 
 STAGE_DIR = "{STAGE_DIR}"
 PRE_STAGE_DIR = "{PRE_STAGE_DIR}"
 
+# Re-runs pre_install even if dependencies have already been built. This can
+# take a long time, set to `true` when debugging individual components.
+# IMPORTANT: setting REBUILD=true will also distable shared dependencies among
+# all variants, this might (or might not!) be desired behaviour
+REBUILD = false
+# Binutils dependency built by pre_install.sh
+BINUTILS        = true
 BINUTILS_SOURCE = "https://ftp.gnu.org/gnu/binutils"
 BINUTILS_NAME   = "binutils-2.44"
-
+# libunwind dependency built by pre_install.sh
+LIBUNWIND        = true
 LIBUNWIND_SOURCE = "https://mirror.marwan.ma/savannah/libunwind"
 LIBUNWIND_NAME   = "libunwind-1.6.2"
-
-PAPI_SOURCE = "https://icl.utk.edu/projects/papi/downloads"
-PAPI_NAME   = "papi-7.1.0"
-
+# PAPI dependency built by pre_install.sh
+PAPI        = true
+PAPI_SOURCE = "https://github.com/icl-utk-edu/papi/releases/download/papi-7-2-0b2-t"
+PAPI_NAME   = "papi-7.2.0b2"
+# Libxml2 dependency built by pre_install.sh
+LIBXML2        = true
 LIBXML2_SOURCE = "https://download.gnome.org/sources/libxml2/2.14"
 LIBXML2_NAME   = "libxml2-2.14.4"
 

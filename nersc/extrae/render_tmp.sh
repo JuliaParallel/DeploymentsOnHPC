@@ -3,8 +3,8 @@ set -eu
 
 pushd ${__DIR__}
 
-# prg_envs=("aocc" "cray" "gnu" "intel" "nvidia" "llvm" "openmpi")
-prg_envs=("gnu" "nvidia") # make gnu go first
+prg_envs=("gnu" "nvidia" "llvm") # NOTE: this will be very slow unless
+                                 #       REBUILD=false in settings.toml
 for prg_env in ${prg_envs[@]}
 do
     mkdir -p ${__PREFIX__}/tmp

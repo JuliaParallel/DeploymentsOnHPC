@@ -45,8 +45,14 @@ destination = "{SITE_DESTINATION}/{INSTALL_VERSION_VARIANT}"
 stage = true
 
 [module]
+use_dependencies = true
+# set `use_shared_artifacts = true` if `REBUILD==true`, this will cause
+# `pre_install.sh` to install all artifacts to `<install root>/opt-<variant>`
+use_shared_artifacts = true
+
 INSTALL_VERSION = "{INSTALL_VERSION}"
 INSTALL_VARIANT = "{SITE_VARIANT}"
+EXTRAE_ROOT = "{SITE_DESTINATION}"
 EXTRAE_PATH = "{INSTALL_DIR}"
 
 [post]

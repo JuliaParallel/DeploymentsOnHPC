@@ -3,7 +3,7 @@ set -eu
 #______________________________________________________________________________
 # Location of any pre-install generated build dependencies
 #
-ARTIFACTS=${INSTALL_DIR}/opt/
+ARTIFACTS=${INSTALL_DIR}/opt
 # If rebuilding, then create seperate directories for artifacts
 [[ ${REBUILD} == true ]] && ARTIFACTS="${ARTIFACTS}-${INSTALL_VARIANT}"
 # these will have been installed by pre_install.sh

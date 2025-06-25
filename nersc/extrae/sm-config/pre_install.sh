@@ -27,7 +27,7 @@ check_bool LIBXML2
 #______________________________________________________________________________
 # Location of any pre-install generated build dependencies
 #
-ARTIFACTS=${INSTALL_DIR}/opt/
+ARTIFACTS=${INSTALL_DIR}/opt
 # If rebuilding, then create seperate directories for artifacts
 [[ ${REBUILD} == true ]] && ARTIFACTS="${ARTIFACTS}-${INSTALL_VARIANT}"
 if [[ -d ${ARTIFACTS} ]]

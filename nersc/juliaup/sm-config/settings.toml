@@ -27,7 +27,7 @@ prefix = "{SITE_DESTINATION}/{STAGE_DIR}"
 # note: this is Lua regex: you will need to escape - and + (using %)
 format = "^dist*$"
 # (optional) relocate after install
-destination = "{SITE_DESTINATION}/juliaup"
+destination = "{SITE_DESTINATION}/juliaup/{INSTALL_VERSION}"
 stage = true
 
 [module]

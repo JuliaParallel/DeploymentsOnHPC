@@ -6,7 +6,7 @@ SITE_CONFIG_DIR = "{SITE_CONFIG_DIR}"
 INSTALL_VERSION = "{INSTALL_VERSION}"
 
 [install]
-versions = ["1.11.5", "1.11.4", "1.10.9", "1.9.4", "1.8.5"]
+versions = ["1.11.5", "1.11.4", "1.10.9", "1.9.4"]
 prefix = "{SITE_DESTINATION}/depot/juliaup/"
 # note: this is Lua regex: you will need to escape - and + (using %)
 format = "^julia%-{INSTALL_VERSION}%+.*$"

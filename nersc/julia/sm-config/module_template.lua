@@ -1,9 +1,8 @@
 help([[
 Julia: A flexible dynamic language, appropriate for scientific and numerical
 computing, with performance comparable to traditional statically-typed
-languages For information about using Python at NERSC, please see our
-documentation:
-https://docs.nersc.gov/development/languages/julia/
+languages. For information about using Julia at NERSC, please see our
+documentation: https://docs.nersc.gov/development/languages/julia/
 ]])
 
 whatis("Name: julia")

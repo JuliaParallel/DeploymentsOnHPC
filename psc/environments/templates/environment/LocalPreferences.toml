@@ -1,0 +1,14 @@
+[MPIPreferences]
+__clear__ = ["preloads_env_switch"]
+_format = "1.0"
+abi = "{{mpi_abi}}"
+binary = "system"
+cclibs = []
+libmpi = "{{mpi_lib}}"
+mpiexec = "{{srun_cmd}}"
+preloads = []
+
+[CUDA_Runtime_jll]
+local = "true"
+version = "{{cuda_version}}"
+

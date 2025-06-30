@@ -1,0 +1,46 @@
+[env]
+# Juliaup install destination
+JULIA_DEPOT_PATH = "{SITE_DESTINATION}/depot"
+JULIAUP_DEPOT_PATH = "{SITE_DESTINATION}/depot"
+# Temporary Rust Install (used to build the Juliaup executable)
+RUSTUP_HOME = "{SITE_DESTINATION}/{PRE_STAGE_DIR}/rustup"
+CARGO_HOME = "{SITE_DESTINATION}/{PRE_STAGE_DIR}/cargo"
+# Helper env vars for the (pre_)install.sh scripts
+INSTALL_VERSION = "{INSTALL_VERSION}"
+SITE_CONFIG_DIR = "{SITE_CONFIG_DIR}"
+INSTALL_ROOT = "{SITE_DESTINATION}"
+INSTALL_SRC = "{SITE_CONFIG_DIR}"
+INSTALL_DIR = "{SITE_DESTINATION}/juliaup"
+STAGE_DIR = "{SITE_DESTINATION}/{STAGE_DIR}"
+# Source of Juliaup
+GH_PROJECT = "https://github.com/JuliaLang"
+# Parameters controlling if any Julia environments are installed alongside of
+# the Juliaup executable (note: the module file still needs to know how to use
+# these)
+COPY_JULIA_ENVS = true
+JULIA_ENVS_SRC  = "../../environments/rendered"
+JULIA_ENVS_DST  = "../environments"
+
+[install]
+versions = ["1.17.21"]
+prefix = "{SITE_DESTINATION}/{STAGE_DIR}"
+# note: this is Lua regex: you will need to escape - and + (using %)
+format = "^dist*$"
+# (optional) relocate after install
+destination = "{SITE_DESTINATION}/juliaup/{INSTALL_VERSION}"
+stage = true
+
+[module]
+use_dependencies = true
+
+INSTALL_VERSION = "{INSTALL_VERSION}"
+JULIA_LOAD_PATH_PREFIX = "{SITE_DESTINATION}/environments"
+BIN_PATH = "{INSTALL_DIR}/bin"
+SCRIPT_PATH = "{SITE_DESTINATION}/scripts"
+
+[post]
+# toggles mandatory relocate if `stage` and `clean` are true. If the install
+# script already relocates the package, then we can set `safe = false`
+safe = true
+# delete staging aread after successful install
+clean = true

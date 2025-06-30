@@ -1,0 +1,5 @@
+name = "juliaup"
+
+relocate = true
+destination = "<TODO: location of julia install on bridges-2"
+modules = "<TODO: location of julia modules on bridges-2"

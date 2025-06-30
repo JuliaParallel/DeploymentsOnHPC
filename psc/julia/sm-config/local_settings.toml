@@ -1,0 +1,5 @@
+name = "julia"
+
+relocate = true
+destination = "<TODO: location of Julia install at PSC>"
+modules = "<TOOD: location of modules at PSC>"

@@ -1,0 +1,15 @@
+[constant]
+template_version = 1
+mpi_mod = "ompi"
+mpi_abi = "OpenMPI"
+mpi_lib = "libmpi"
+srun_cmd = "mpirun"
+
+[zip]
+
+cuda_version = ["12.6.1", "12.6.1",
+                "12.4.0", "12.4.0"]
+mpi_version  = ["5.0.8", "4.0.5",
+                "5.0.8", "4.0.5"]
+toolchain    = ["gcc13.3.1", "nvhpc22.9",
+                "gcc13.3.1", "nvhpc22.9"]

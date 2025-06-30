@@ -1,0 +1,13 @@
+{
+  "display_name": "PSC Julia {{julia_version}} {{julia_thread_ct}} Thread(s){{#use_latest}} Beta{{/use_latest}}",
+  "argv": [
+    "{resource_dir}/kernel-helper.sh",
+    "{connection_file}"
+  ],
+  "language": "julia",
+  "env": {},
+  "interrupt_mode": "signal",
+  "metadata": {
+    "debugger": true
+  }
+}

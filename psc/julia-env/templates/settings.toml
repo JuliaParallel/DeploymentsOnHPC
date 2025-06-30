@@ -1,0 +1,12 @@
+[constant]
+template_version = 1 
+julia_module_path = "<TODO: add PSC JULIA MODULE PATH>"
+module_name = "julia-env"
+
+[zip]
+cuda_version = ["12.6.1", "12.6.1",
+                "12.4.0", "12.4.0"]
+mpi_version  = ["5.0.8", "4.0.5",
+                "5.0.8", "4.0.5"]
+toolchain    = ["gcc13.3.1", "nvhpc22.9",
+                "gcc13.3.1", "nvhpc22.9"]

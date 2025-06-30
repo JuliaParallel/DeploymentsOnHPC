@@ -1,0 +1,8 @@
+[constant]
+template_version = 1 
+kernel_resource_dir = "<TODO: location of PSC global julia modules>"
+
+[product]
+julia_version = ["1.11.5", "1.10.9"]
+julia_thread_ct = [1, 8]
+use_latest = [true, false]

@@ -141,7 +141,7 @@ can find a [description of these here](./common/README.md).
 
 ### PSC
 
-Coming soon
+[Description here](./psc/README.md)
 
 ### TACC
 

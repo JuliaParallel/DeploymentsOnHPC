@@ -89,7 +89,7 @@ update, rather than needing to reinstall everything)
 
 Run:
 ```bash
-$ ./entrypoint.sh ./psc/environments/templates/render.sh
+./entrypoint.sh ./psc/environments/templates/render.sh
 ```
 (there is no `_tmp` version -- Global preferences are rendered locally and then
 copied by the Juliaup installer)

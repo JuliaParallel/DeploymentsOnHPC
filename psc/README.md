@@ -127,6 +127,11 @@ copied by the Juliaup installer)
 ./entrypoint.sh ./psc/julia/render_tmp.sh
 ```
 
+**Important:** these rely on the `juliaup` module being in the `MODULEPATH`. If
+installing to a location not on the `MODULEPATH` (e.g. installing for the first
+time to `tmp`), then be sure to remember running `ml use
+/path/to/juliaup/module` before running the Julia binary install (above).
+
 ### Install Jupyter Kernels
 
 * For the _global version_ run:

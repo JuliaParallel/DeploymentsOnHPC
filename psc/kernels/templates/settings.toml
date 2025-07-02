@@ -1,5 +1,5 @@
 [constant]
-template_version = 1 
+template_version = 1
 kernel_resource_dir = "<TODO: location of PSC global julia modules>"
 
 [product]

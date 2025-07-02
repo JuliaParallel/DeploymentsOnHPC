@@ -1,5 +1,5 @@
 [constant]
-template_version = 1 
+template_version = 1
 julia_module_path = "<TODO: add PSC JULIA MODULE PATH>"
 module_name = "julia-env"
 

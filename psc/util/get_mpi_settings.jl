@@ -18,4 +18,4 @@ using MPIPreferences
 
 
 @info "Identified the `openmpi` MPI Lmod Family"
-MPIPreferences.use_system_binary(mpiexec="mpirun") 
+MPIPreferences.use_system_binary(mpiexec="mpirun")

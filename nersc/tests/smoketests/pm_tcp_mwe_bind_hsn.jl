@@ -40,16 +40,102 @@ NWORKERS = 2
 @async run(`srun -n $NWORKERS bash -c $(cc)`)
 
 # wait for them to connect
-while nworkers()<NWORKERS
-    @warn "Waiting for workers to connect" nworkers()
+while nworkers() < NWORKERS
+    @warn "Waiting for workers to connect" nworkers() NWORKERS
     sleep(1)
 end
 
 @info "Connections established" nworkers()
 
-# test transfer
+# Test transfer
 @info "Running basic transfer test"
 y = rand(Float32, 4*1024^2)
 for i=1:20
     @time @everywhere x = $y
 end
+
+# Test channels
+@info "Running basic channel test"
+@everywhere function do_work(input_channel, output_channel, worker_id)
+    println("Worker $worker_id starting work...")
+    
+    # Process items from input channel
+    while true
+        try
+            # Get work item from input channel
+            item = take!(input_channel)
+            
+            if item == :stop
+                println("Worker $worker_id received stop signal")
+                break
+            end
+            
+            # Do some computation
+            result = item^2 + worker_id
+            sleep(0.5)  # Simulate work
+            
+            # Send result to output channel
+            put!(output_channel, (worker_id, item, result))
+            println("Worker $worker_id processed $item -> $result")
+            
+        catch e
+            if isa(e, InvalidStateException)
+                println("Worker $worker_id: Channel closed")
+                break
+            else
+                rethrow(e)
+            end
+        end
+    end
+    
+    println("Worker $worker_id finished")
+end
+
+# Create remote channels
+# Channel from worker 1 to worker 2
+channel_1_to_2 = RemoteChannel(()->Channel{Any}(10), 2)
+# Channel for collecting results on main process
+result_channel = RemoteChannel(()->Channel{Any}(20), 1)
+
+@info "Starting perpetual 'do_work' on worker 2"
+worker_2_task = @spawnat 2 do_work(channel_1_to_2, result_channel, 2)
+
+@info "Start work by feeding 'channel_1_to_2' channel on worker 1 "
+worker_1_task = @spawnat 1 begin
+    println("Worker 1 sending work items...")
+    
+    # Send work items to worker 2
+    for i in 1:5
+        put!(channel_1_to_2, i)
+        println("Worker 1 sent work item: $i")
+        sleep(0.2)
+    end
+    
+    # Send stop signal
+    put!(channel_1_to_2, :stop)
+    println("Worker 1 sent stop signal")
+end
+
+# Collect results on main process
+@info "Collecting results..."
+round_trip_results  = []
+global result_count = 0
+while result_count < 5  # We expect 5 results
+    try
+        result = take!(result_channel)
+        push!(round_trip_results, result)
+        global result_count += 1
+        println("Main process received: $result")
+    catch e
+        if isa(e, InvalidStateException)
+            break
+        else
+            rethrow(e)
+        end
+    end
+end
+
+@info "Waiting for workers to complete"
+wait(worker_1_task)
+wait(worker_2_task)
+@info ">>> DONE DONE DONE <<<"

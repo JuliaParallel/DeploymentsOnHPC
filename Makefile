@@ -12,7 +12,7 @@ SITE ?= INVALID
 MODE ?= INVALID
 # Valid sites and modes
 SITES := nersc psc
-MODES := local production
+MODES := local global
 # Check site and mode
 ifneq ($(filter $(SITE),$(SITES)),$(SITE))
     $(error SITE must be one of: $(SITES))

@@ -1,0 +1,3 @@
+[deps]
+ElasticClusterManager = "547eee1f-27c8-4193-bfd6-9e092c8e3331"
+NetworkInterfaceControllers = "6f74fd91-2978-43ad-8164-3af8c0ec0142"

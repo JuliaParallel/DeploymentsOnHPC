@@ -20,6 +20,8 @@ GH_PROJECT = "https://github.com/JuliaLang"
 COPY_JULIA_ENVS = true
 JULIA_ENVS_SRC  = "../../environments/rendered"
 JULIA_ENVS_DST  = "../environments"
+# Max number of threads to use while building juliaup
+NPROC = 16
 
 [install]
 versions = ["1.17.21"]

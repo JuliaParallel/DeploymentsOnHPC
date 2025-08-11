@@ -11,7 +11,7 @@ fi
 
 cd gh
 
-${CARGO_HOME}/bin/cargo build --release --no-default-features
+${CARGO_HOME}/bin/cargo build -j ${NPROC} --release --no-default-features
 mkdir -p ${STAGE_DIR}/dist
 ${CARGO_HOME}/bin/cargo install --path . --root ../dist
 

@@ -31,7 +31,7 @@ global)
         --chmod-overwrite "{\".*/kernel%-helper.sh$\": \"u+rx,g+rx,o+rx\"}" \
         jupyter                                                             \
         settings.toml                                                       \
-        "${KERNEL_DIR}/rendered/${SITE_NAME}-{{julia_thread_ct}}-{{}}{{#use_latest}}-beta{{/use_latest}}"
+        "${KERNEL_DIR}/rendered/${SITE_NAME}-{{julia_thread_ct}}-{{julia_version}}{{#use_latest}}-beta{{/use_latest}}"
     ;;
 local)
     ${__PREFIX__}/opt/bin/simple-templates.ex                               \

@@ -4,7 +4,6 @@ set -eu
 pushd ${__DIR__}
 case ${__MODE__} in
 global)
-
     ${__PREFIX__}/opt/bin/simple-modules.ex sm-config/
 
     ${__PREFIX__}/opt/bin/simple-templates.ex              \

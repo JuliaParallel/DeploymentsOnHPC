@@ -40,7 +40,16 @@ finally
 end
 
 @info "Success! IJulia found and seems to be working"
-# Last line of output needs to be path the of the kernel.jl -- calling script
-# will ignore earlier logging output
-println(joinpath(splitpath(pathof(IJulia))[1:end-1]..., "kernel.jl"))
-
+# Depending on the IJulia version, the kernel is launched either by running the
+# kernel.jl file or the "run_kernel" function. This was bifurcated in v1.28:
+# https://github.com/JuliaLang/IJulia.jl/blob/master/docs/src/_changelog.md#v1280---2025-06-01
+#
+# Last line of bootstrap.jl will be passed to Julia by the kernel-helper.sh
+# (earlier lines will be ingored)
+if pkgversion(IJulia) >= v"1.28"
+    @info "New IJulia detected, using contemporary API" pkgversion(IJulia)
+    println("-e 'import IJulia; IJulia.run_kernel()'")
+else
+    @info "Old IJulia detected, using legacy API" pkgversion(IJulia)
+    println(joinpath(splitpath(pathof(IJulia))[1:end-1]..., "kernel.jl"))
+end

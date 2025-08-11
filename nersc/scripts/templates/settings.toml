@@ -1,6 +1,7 @@
 [constant]
 template_version = 1 
 nersc_resource_dir = "/global/common/software/nersc9/julia"
+kernel_prefix_name = "nersc-julia"
 
 [zip]
-julia_version = ["1.11.4", "1.10.9"]
+julia_version = ["1.11.5", "1.11.4", "1.10.9", "1.9.4"]

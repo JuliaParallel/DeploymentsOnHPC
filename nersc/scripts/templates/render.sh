@@ -29,6 +29,12 @@ global)
         bin                                                \
         settings.toml                                      \
         "${SCRIPT_DIR}"
+    # install_beta.sh is special
+    ${__PREFIX__}/opt/bin/simple-templates.ex              \
+        --chmod "u+rx,g+rx,o+rx,g-w,o-w" --chmod-basename  \
+        install_beta.sh                                    \
+        settings.toml                                      \
+        "${SCRIPT_DIR}/install_beta_{{{julia_version}}}.sh"
     ;;
 
 local)
@@ -38,6 +44,13 @@ local)
         bin                                                         \
         settings.toml                                               \
         "${SCRIPT_DIR}"
+    # install_beta.sh is special
+    ${__PREFIX__}/opt/bin/simple-templates.ex                       \
+        --overwrite "{\"nersc_resource_dir\": \"${RESOURCE_DIR}\"}" \
+        --chmod "u+rx,g+rx,o+rx,g-w,o-w" --chmod-basename           \
+        install_beta.sh                                             \
+        settings.toml                                               \
+        "${SCRIPT_DIR}/install_beta_{{{julia_version}}}.sh"
     ;;
 
     *) echo "__MODE__=${__MODE__} is not a valid setting"

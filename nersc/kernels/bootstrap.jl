@@ -48,7 +48,7 @@ end
 # (earlier lines will be ingored)
 if pkgversion(IJulia) >= v"1.28"
     @info "New IJulia detected, using contemporary API" pkgversion(IJulia)
-    println("-e 'import IJulia; IJulia.run_kernel()'")
+    println(joinpath(@__DIR__, "run_kernel.jl"))
 else
     @info "Old IJulia detected, using legacy API" pkgversion(IJulia)
     println(joinpath(splitpath(pathof(IJulia))[1:end-1]..., "kernel.jl"))

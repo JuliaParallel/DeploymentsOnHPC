@@ -4174,6 +4174,9 @@ parser:option(
     "--overwrite", "JSON-formatted overwrite table, eg: '{\"key\": \"new value\"}'"
 ):args(1)
 parser:option(
+    "--chmod-overwrite", "JSON-formatted overwrite table for chmod, eg: '{\"key\": \"new value\"}'"
+):args(1)
+parser:option(
     "--dir", "Directory mode: <template> must be a directory tree, every contained within is treated as a template file"
 ):args(0):default(false)
 parser:option(
@@ -4245,9 +4248,13 @@ ensure_table(settings, "constant")
 ensure_table(settings, "product")
 ensure_table(settings, "zip")
 ensure_table(settings, "overwrite")
+ensure_table(settings, "chmod_overwrite")
 -- decode overwrite table (if given), these will be applied to constaints later
 if nil ~= args.overwrite then
     settings.overwrite = json.decode(args.overwrite)
+end
+if nil ~= args.chmod_overwrite then
+    settings.chmod_overwrite = json.decode(args.chmod_overwrite)
 end
 
 -- populate dictionaries of key/vals and (if in debug mode) print how the inputs
@@ -4487,6 +4494,14 @@ if nil ~= args.chmod then
             local chmod_str = "chmod -R " .. v .. " " .. out_file
             log.trace("Running: " .. chmod_str)
             os.execute(chmod_str)
+            -- check if file is tartet of chmod-overwrite
+            for chmod_ow_target, chmod_ow in pairs(settings.chmod_overwrite) do
+                if string.match(out_file, chmod_ow_target) then
+                    chmod_str = "chmod -R " .. chmod_ow .. " " .. out_file
+                    log.trace("Overwriting with extra chmod: " .. chmod_str)
+                    os.execute(chmod_str)
+                end
+            end
             -- in basename mode, chmod the basename of the file also, in order
             -- to avoid duplicating operations, we'll collect a dict of paths
             -- first, and chmod later

@@ -1657,6 +1657,11 @@ function M.parse_version(version_str)
 end
 
 
+function M.isfile(fn)
+    return (posix.stat(fn, "type") == "regular")
+end
+
+
 function M.file_exists(name)
     -- on some operating systems io.iopen on directories does not return nil
     if M.isdir(name) then return false end
@@ -1689,6 +1694,15 @@ end
 
 function M.dir_exists(name)
     return M.isdir(name)
+end
+
+
+-- check if something is either a file or a directory
+function M.fsobj_exists(name)
+    if M.isfile(name) then return true end
+    if M.isdir(name)  then return true end
+
+    return false
 end
 
 
@@ -4450,7 +4464,7 @@ local config_dir = gears.realdir(args.config_dir)
 local sm_root = args.sm_root
 if nil ~= sm_root then
     -- ensure that <sm_root> is not a file
-    if gears.file_exists(sm_root) then
+    if not gears.isdir(sm_root) then
         log.fatal(f"SM_ROOT={sm_root} is a file, but needs to be a directory!")
         os.exit(1)
     end
@@ -4643,11 +4657,16 @@ if settings.site.relocate then
         if loc == dest then
             log.warn(f"not relocating {loc} to {dest} (they are the same)")
         elseif gears.realdir(loc) == gears.realdir(dest) then
-            log.warn(f"not relocating {loc} to {dest} (they are the same location in the filesystem)")
+            log.warn(
+                f"not relocating {loc} to {dest} " ..
+                "(they are the same location in the filesystem)"
+            )
         else
             log.info(f"Relocating: {loc} to {dest}")
-            if gears.file_exists(dest) then
-                log.warn(f"{dest} not free => deleting before `mv {loc} {dest}`")
+            if gears.fsobj_exists(dest) then
+                log.warn(
+                    f"{dest} not free => deleting before `mv {loc} {dest}`"
+                )
                 sh.rm("-r", "-f", dest) -- ensure order => don't use table
             end
             sh.mv(loc, dest)

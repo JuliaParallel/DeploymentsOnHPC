@@ -11,8 +11,8 @@ cray = [true,  true,  true,  true,
 
 mpi_mod = ["cray-mpich", "cray-mpich", "cray-mpich", "cray-mpich",
            "openmpi",    "openmpi",    "openmpi",    "openmpi"]
-mpi_abi = ["MPICH",   "MPICH",   "MPICH",  "MPICH",
-           "OpenMPI", "OpenMPI", "OpenMPI" "OpenMPI"]
+mpi_abi = ["MPICH",   "MPICH",   "MPICH",   "MPICH",
+           "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI"]
 mpi_lib = ["libmpi_cray.so", "libmpi_cray.so", "libmpi_cray.so", "libmpi_cray.so",
            "libmpi",         "libmpi",         "libmpi",         "libmpi"]
 

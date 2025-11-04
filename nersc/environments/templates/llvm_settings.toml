@@ -9,13 +9,13 @@ cclibs = ''
 
 [zip]
 
-mpi_mod = ["mpich",   "mpich",   "mpich",   "mpich",
-           "openmpi", "openmpi", "openmpi", "openmpi"]
-mpi_abi = ["MPICH",   "MPICH",   "MPICH",   "MPICH",
-           "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI"]
+mpi_mod = ["mpich",   "mpich",   "mpich",   "mpich",   "mpich",
+           "openmpi", "openmpi", "openmpi", "openmpi", "openmpi"]
+mpi_abi = ["MPICH",   "MPICH",   "MPICH",   "MPICH",   "MPICH",
+           "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI"]
 
-srun_cmd = ["srun",            "srun",            "srun",            "srun",
-            "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix"]
+srun_cmd = ["srun",            "srun",            "srun",            "srun",            "srun",
+            "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix"]
 
-cuda_version = ["11.7", "12.0", "12.2", "12.4",
-                "11.7", "12.0", "12.2", "12.4"]
+cuda_version = ["11.7", "12.0", "12.2", "12.4", "12.9",
+                "11.7", "12.0", "12.2", "12.4", "12.9"]

@@ -34,9 +34,9 @@ ifeq ($(MODE),local)
     LOCAL_PATH ?= $(MKFILE_DIR)/tmp
     EP_ARG := -l $(LOCAL_PATH)
     $(info Running in local install mode with LOCAL_PATH=$(LOCAL_PATH))
-	ML_CMD = ml use $(LOCAL_PATH)/modules
+    ML_CMD = ml use $(LOCAL_PATH)/modules
 else
-    EP_ARG := ""
+    EP_ARG :=
 endif
 
 # Build steps

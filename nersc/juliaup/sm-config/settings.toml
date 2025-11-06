@@ -24,7 +24,7 @@ JULIA_ENVS_DST  = "../environments"
 NPROC = 16
 
 [install]
-versions = ["1.17.21"]
+versions = ["1.18.9"]
 prefix = "{SITE_DESTINATION}/{STAGE_DIR}"
 # note: this is Lua regex: you will need to escape - and + (using %)
 format = "^dist*$"

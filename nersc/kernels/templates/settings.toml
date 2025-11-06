@@ -3,6 +3,6 @@ template_version = 1
 nersc_resource_dir = "/global/common/software/nersc9/julia/kernels"
 
 [product]
-julia_version = ["1.11.5", "1.11.4", "1.10.9", "1.9.4"]
+julia_version = ["1.12.1", "1.11.7", "1.10.10"]
 julia_thread_ct = [1, 8]
 use_latest = [true, false]

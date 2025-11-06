@@ -5251,6 +5251,19 @@ local function split(inputstr, sep)
 end
 
 --------------------------------------------------------------------------------
+-- helper functions for manipulating maps
+--------------------------------------------------------------------------------
+
+local function check_map(map, var_name, var_val)
+    for name, rule in pairs(map) do
+        if var_val == rule.trigger[tostring(var_name)] then
+            return {name=name, rule=rule.apply}
+        end
+    end
+    return {}
+end
+
+--------------------------------------------------------------------------------
 -- metadata storage for the run
 --------------------------------------------------------------------------------
 
@@ -5646,18 +5659,14 @@ if (nil == next(settings.product)) and (nil == next(settings.zip)) then
     local tmpl = list_to_dict(const_vars, const_vals)
     -- apply maps
     for k, v in pairs(tmpl) do
-        local vmap = settings.map[tostring(k)]
-        if nil ~= vmap then
-            log.debug("Applying map to: " .. k)
-            for kk, vv in pairs(vmap) do
-                local old_val = tonumber(kk)
-                local new_val = tonumber(vv)
-                if nil == old_val then old_val = kk end
-                if nil == new_val then new_val = vv end
-                if old_val == tmpl[k] then
-                    log.trace(" + "..old_val.." => "..new_val)
-                    tmpl[k] = new_val
-                end
+        local map = check_map(settings.map, k, v)
+        if nil ~= map.name then
+            log.debug("Applying map "..map.name.." to: " .. k)
+            for var, val in pairs(map.rule) do
+                local new_val = tonumber(val)
+                if nil == new_val then new_val = val end
+                log.trace(" + "..tmpl[var].." => "..new_val)
+                tmpl[var] = new_val
             end
         end
     end
@@ -5697,18 +5706,14 @@ if nil ~= next(settings.product) then
         for k, v in pairs(list_to_dict(prod_vars, prod_inst)) do tmpl[k] = v end
         -- apply maps
         for k, v in pairs(tmpl) do
-            local vmap = settings.map[tostring(k)]
-            if nil ~= vmap then
-                log.debug("Applying map to: " .. k)
-                for kk, vv in pairs(vmap) do
-                    local old_val = tonumber(kk)
-                    local new_val = tonumber(vv)
-                    if nil == old_val then old_val = kk end
-                    if nil == new_val then new_val = vv end
-                    if old_val == tmpl[k] then
-                        log.trace(" + "..old_val.." => "..new_val)
-                        tmpl[k] = new_val
-                    end
+            local map = check_map(settings.map, k, v)
+            if nil ~= map.name then
+                log.debug("Applying map "..map.name.." to: " .. k)
+                for var, val in pairs(map.rule) do
+                    local new_val = tonumber(val)
+                    if nil == new_val then new_val = val end
+                    log.trace(" + "..tmpl[var].." => "..new_val)
+                    tmpl[var] = new_val
                 end
             end
         end
@@ -5749,18 +5754,14 @@ if nil ~= next(settings.zip) then
         for k, v in pairs(list_to_dict(zip_vars, zip_inst)) do tmpl[k] = v end
         -- apply maps
         for k, v in pairs(tmpl) do
-            local vmap = settings.map[tostring(k)]
-            if nil ~= vmap then
-                log.debug("Applying map to: " .. k)
-                for kk, vv in pairs(vmap) do
-                    local old_val = tonumber(kk)
-                    local new_val = tonumber(vv)
-                    if nil == old_val then old_val = kk end
-                    if nil == new_val then new_val = vv end
-                    if old_val == tmpl[k] then
-                        log.trace(" + "..old_val.." => "..new_val)
-                        tmpl[k] = new_val
-                    end
+            local map = check_map(settings.map, k, v)
+            if nil ~= map.name then
+                log.debug("Applying map "..map.name.." to: " .. k)
+                for var, val in pairs(map.rule) do
+                    local new_val = tonumber(val)
+                    if nil == new_val then new_val = val end
+                    log.trace(" + "..tmpl[var].." => "..new_val)
+                    tmpl[var] = new_val
                 end
             end
         end

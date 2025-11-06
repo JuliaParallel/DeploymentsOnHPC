@@ -5,19 +5,15 @@ prg_env = "gnu"
 # ignored by non-cray modules
 cclibs = '"darshan", "lustreapi", "z", "cupti", "cudart", "cuda", "sci_gnu_mpi", "sci_gnu", "dl", "dsmml", "xpmem"'
 
-[zip]
-cray = [true,  true,  true,  true,  true,
-        false, false, false, false, false]
+mpi_mod  = "Map OVERWRITE"
+mpi_abi  = "Map OVERWRITE"
+mpi_lib  = "Map OVERWRITE"
+srun_cmd = "Map OVERWRITE"
 
-mpi_mod = ["cray-mpich", "cray-mpich", "cray-mpich", "cray-mpich", "cray-mpich",
-           "openmpi",    "openmpi",    "openmpi",    "openmpi",    "openmpi"]
-mpi_abi = ["MPICH",   "MPICH",   "MPICH",   "MPICH",   "MPICH",
-           "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI"]
-mpi_lib = ["libmpi_gnu_123.so", "libmpi_gnu_123.so", "libmpi_gnu_123.so", "libmpi_gnu_123.so", "libmpi_gnu_123.so",
-           "libmpi",            "libmpi",            "libmpi",            "libmpi",            "libmpi"]
+[product]
+cray = [true, false]
+cuda_version = ["11.7", "12.0", "12.2", "12.4", "12.9"]
 
-srun_cmd = ["srun",            "srun",            "srun",            "srun",            "srun",
-            "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix"]
-
-cuda_version = ["11.7", "12.0", "12.2", "12.4", "12.9",
-                "11.7", "12.0", "12.2", "12.4", "12.9"]
+[map]
+map_cray     = {trigger={cray=true},  apply={mpi_mod="cray-mpich", mpi_abi="MPICH",   mpi_lib="libmpi_gnu_123.so", srun_cmd="srun"           }}
+map_not_cray = {trigger={cray=false}, apply={mpi_mod="openmpi",    mpi_abi="OpenMPI", mpi_lib="libmpi",            srun_cmd="srun --mpi=pmix"}}

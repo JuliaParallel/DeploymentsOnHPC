@@ -7,15 +7,13 @@ mpi_lib = "libmpi"
 # ignored by non-cray modules
 cclibs = ''
 
-[zip]
+mpi_abi  = "Map OVERWRITE"
+srun_cmd = "Map OVERWRITE"
 
-mpi_mod = ["mpich",   "mpich",   "mpich",   "mpich",   "mpich",
-           "openmpi", "openmpi", "openmpi", "openmpi", "openmpi"]
-mpi_abi = ["MPICH",   "MPICH",   "MPICH",   "MPICH",   "MPICH",
-           "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI", "OpenMPI"]
+[product]
+cuda_version = ["11.7", "12.0", "12.2", "12.4", "12.9"]
+mpi_mod      = ["mpich", "openmpi"]
 
-srun_cmd = ["srun",            "srun",            "srun",            "srun",            "srun",
-            "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix", "srun --mpi=pmix"]
-
-cuda_version = ["11.7", "12.0", "12.2", "12.4", "12.9",
-                "11.7", "12.0", "12.2", "12.4", "12.9"]
+[map]
+map_mpich  = {trigger={mpi_mod="mpich"},   apply={mpi_abi="MPICH",   srun_cmd="srun"           }}
+ap_openmpi = {trigger={mpi_mod="openmpi"}, apply={mpi_abi="OpenMPI", srun_cmd="srun --mpi=pmix"}}

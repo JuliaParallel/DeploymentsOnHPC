@@ -1,0 +1,19 @@
+[constant]
+template_version = 2
+cray = false
+
+prg_env = "builtin"
+mpi_lib = "libmpi"
+# ignored by non-cray modules
+cclibs = ''
+
+mpi_abi  = "Map OVERWRITE"
+srun_cmd = "Map OVERWRITE"
+
+[product]
+cuda_version = ["12.4"]
+mpi_mod      = ["openmpi"]
+
+[map]
+map_mpich  = {trigger={mpi_mod="mpich"},   apply={mpi_abi="MPICH",   srun_cmd="srun"}}
+ap_openmpi = {trigger={mpi_mod="openmpi"}, apply={mpi_abi="OpenMPI", srun_cmd="srun"}}

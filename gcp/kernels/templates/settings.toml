@@ -1,0 +1,8 @@
+[constant]
+template_version = 1 
+runtime_dir = "/deploy/jupyter/kernel_runtime/julia"
+
+[product]
+julia_version = ["1.12.1", "1.11.7"]
+julia_thread_ct = [1, 8]
+use_latest = [false]

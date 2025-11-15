@@ -11,7 +11,7 @@ MKFILE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SITE ?= INVALID
 MODE ?= INVALID
 # Valid sites and modes
-SITES := nersc psc
+SITES := nersc psc gcp
 MODES := local global
 # Check site and mode
 ifneq ($(filter $(SITE),$(SITES)),$(SITE))

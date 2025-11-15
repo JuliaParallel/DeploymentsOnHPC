@@ -1,0 +1,5 @@
+name = "julia"
+
+relocate = true
+destination = "/deploy/julia"
+modules = "/opt/apps/modulefiles"

@@ -1,0 +1,30 @@
+[MPIPreferences]
+{{#cray}}
+_format = "1.1"
+{{/cray}}
+{{^cray}}
+__clear__ = ["preloads_env_switch"]
+_format = "1.0"
+{{/cray}}
+abi = "{{mpi_abi}}"
+binary = "system"
+{{#cray}}
+cclibs = [{{{cclibs}}}]
+{{/cray}}
+{{^cray}}
+cclibs = []
+{{/cray}}
+libmpi = "{{mpi_lib}}"
+mpiexec = "{{srun_cmd}}"
+{{#cray}}
+preloads = ["libmpi_gtl_cuda.so"]
+preloads_env_switch = "MPICH_GPU_SUPPORT_ENABLED"
+{{/cray}}
+{{^cray}}
+preloads = []
+{{/cray}}
+
+[CUDA_Runtime_jll]
+local = "true"
+version = "{{cuda_version}}"
+

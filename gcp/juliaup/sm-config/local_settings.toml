@@ -1,0 +1,5 @@
+name = "juliaup"
+
+relocate = true
+destination = "/deploy/juliaup/"
+modules = "/opt/apps/modulefiles"

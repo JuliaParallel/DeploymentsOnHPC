@@ -150,3 +150,24 @@ Coming soon
 ### DIII-D
 
 Coming soon
+
+## FAQ
+
+### How is this different from [JUHPC](https://github.com/JuliaParallel/JUHPC)?
+
+[JUHPC](https://github.com/JuliaParallel/JUHPC) is a user space wrapper that
+helps in downlaoding and configuring (via `Pkg`) Julia. So it is great for
+configuring Julia based on clues from the environment. However many HPC systems
+have several versions of critical system software, so we still need a framework
+for interacting with the module system. In practise this leads to the following
+differences:
+
+1. Our version builds [juliaup](https://github.com/JuliaLang/juliaup) without
+   `selfupdate`. You need to build juliaup from source in order to disable it
+   from attempting to grab write access to files that is owned by the user.
+2. We have a wrapper called juliaup-hpc which generates a module file for any
+   user-installed Julia versions (ideally that will make it upstream into
+   juliaup some time).
+3. We generate module files which know how to interact with the system modules.
+4. We manage globally installed Jupyter kernels
+

@@ -20,16 +20,7 @@ endif
 ifneq ($(filter $(MODE),$(MODES)),$(MODE))
     $(error MODE must be one of: $(MODES))
 endif
-# # RENDER_CMD_SUFFIX will be used to decide if a render_tmp.sh will be used or
-# # not. The idea is to add $(RENDER_CMD_SUFFIX) to all render commands from this
-# # point onwards.
-# ifeq ($(MODE),tmp)
-# 	RENDER_CMD_SUFFIX := _tmp
-# else
-# 	RENDER_CMD_SUFFIX := 
-# endif
-# If running in local mode, we also need to get the destination path as an
-# input
+
 ifeq ($(MODE),local)
     LOCAL_PATH ?= $(MKFILE_DIR)/tmp
     EP_ARG := -l $(LOCAL_PATH)
